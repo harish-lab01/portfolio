@@ -70,14 +70,15 @@ export default function Contact() {
                 Open to Opportunities
               </span>
               <h3 className="font-display text-2xl md:text-3xl font-bold text-text-primary leading-snug mb-4">
-                Got a project or role in mind?{' '}
+                Looking for the right{' '}
                 <span className="bg-gradient-to-r from-primary-glow-from via-[#FF6B9D] to-[#FFB347] bg-clip-text text-transparent">
-                  Let's talk.
+                  opportunity.
                 </span>
               </h3>
               <p className="text-sm text-text-muted font-body leading-relaxed">
-                I'm actively looking for frontend engineering roles, freelance projects, and
-                interesting collaborations. Drop me a message — I usually reply within a day.
+                I'm actively seeking full-time Software Developer roles where I can contribute,
+                grow, and build great products. If you're hiring or know of an opening,
+                I'd love to connect — I usually reply within a day.
               </p>
             </div>
 
@@ -88,7 +89,7 @@ export default function Contact() {
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
               </span>
               <span className="text-xs font-code text-emerald-500 font-bold uppercase tracking-widest">
-                Available for hire
+                Open to full-time roles
               </span>
             </div>
 
@@ -125,7 +126,7 @@ export default function Contact() {
                       <p className="text-[10px] font-code font-bold tracking-widest text-text-muted uppercase mb-0.5">
                         {item.label}
                       </p>
-                      <p className="text-sm font-code text-text-primary font-medium">{item.value}</p>
+                      <p className="text-sm font-code text-text-primary font-medium truncate max-w-[180px] sm:max-w-none">{item.value}</p>
                     </div>
                   </div>
 

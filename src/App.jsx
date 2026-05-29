@@ -207,9 +207,7 @@ export default function App() {
         <Journey />
 
         {/* Projects Showcase */}
-        <div id="projects">
-          <Projects />
-        </div>
+        <Projects />
 
         <Skills />
         <Contact />

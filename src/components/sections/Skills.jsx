@@ -185,7 +185,7 @@ export default function Skills() {
 
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div>
-              <h2 className="font-display text-5xl md:text-6xl font-bold text-text-primary leading-none tracking-tight">
+              <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-text-primary leading-none tracking-tight">
                 Skills &{' '}
                 <span className="bg-gradient-to-r from-primary-glow-from to-primary-glow-to bg-clip-text text-transparent">
                   Expertise
@@ -198,7 +198,7 @@ export default function Skills() {
             </div>
 
             {/* Stats — same style as About stats row */}
-            <div className="flex gap-8 shrink-0 border-l border-border-glow/40 pl-8">
+            <div className="flex gap-8 shrink-0 sm:border-l sm:border-border-glow/40 sm:pl-8">
               {[
                 { val: allSkills.length, label: 'Technologies' },
                 { val: '4', label: 'Domains' },

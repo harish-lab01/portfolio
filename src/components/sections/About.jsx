@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import useTextScramble from '../../hooks/useTextScramble';
 import StatCounter from '../ui/StatCounter';
 import TechOrbit from '../ui/TechOrbit';
 import { stats } from '../../data/portfolioData';
 import { IoLocationOutline } from 'react-icons/io5';
-import { FaCoffee } from 'react-icons/fa';
 import harishAvatar from '../../assets/harish_avatar.png';
 
 /* ─── main component ───────────────────────────────────────────── */
@@ -26,19 +25,6 @@ export default function About() {
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   }, []);
-
-  /* coffee brewer */
-  const [cups, setCups]           = useState(0);
-  const [brew, setBrew]           = useState('idle');
-  const handleBrew = () => {
-    if (brew === 'brewing') return;
-    setBrew('brewing');
-    setTimeout(() => {
-      setBrew('ready');
-      setCups(p => p + 1);
-      setTimeout(() => setBrew('idle'), 3500);
-    }, 2000);
-  };
 
   return (
     <section
@@ -81,14 +67,14 @@ export default function About() {
               </div>
               <div>
                 <p className="font-display font-bold text-text-primary text-lg leading-none">Harish M</p>
-                <p className="font-code text-[11px] text-text-muted mt-0.5">Frontend &amp; UI Developer</p>
+                <p className="font-code text-[11px] text-text-muted mt-0.5">Software Developer</p>
               </div>
             </div>
 
             {/* big heading */}
             <h2
               ref={scramble.ref}
-              className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-text-primary leading-[1.05] tracking-tight"
+              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-text-primary leading-[1.05] tracking-tight"
             >
               {scramble.text}
             </h2>
@@ -98,18 +84,18 @@ export default function About() {
 
             {/* bio paragraph */}
             <p className="mt-6 text-base md:text-lg text-text-muted leading-relaxed font-body max-w-xl">
-              I'm a Frontend Developer based in{' '}
-              <span className="text-text-primary font-semibold">Chennai, India</span>. I obsess over
-              clean modular code, silky smooth transitions, and digital interfaces that feel as good
-              as they look — bridging design templates with full-scale{' '}
-              <span className="text-text-primary font-semibold">.NET APIs</span>.
+              I'm a Software Developer based in{' '}
+              <span className="text-text-primary font-semibold">Chennai, India</span>. I build
+              complete web applications — from pixel-perfect React frontends to robust{' '}
+              <span className="text-text-primary font-semibold">.NET Core APIs</span> — delivering
+              production-grade software that's fast, scalable, and great to use.
             </p>
 
             {/* quote */}
             <p className="mt-6 font-display italic text-xl md:text-2xl text-text-primary/80 leading-snug border-l-2 border-primary-glow-from/40 pl-4">
               "I don't just write code —{' '}
               <span className="bg-gradient-to-r from-primary-glow-from via-aurora-pink to-aurora-amber bg-clip-text text-transparent font-semibold not-italic">
-                I craft experiences.
+                I build products.
               </span>"
             </p>
 
@@ -123,17 +109,11 @@ export default function About() {
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 {timeStr || '—'} IST
               </span>
-              <span className="flex items-center gap-1.5 text-amber-600 cursor-pointer group" onClick={handleBrew}>
-                <FaCoffee className="group-hover:scale-110 transition-transform" />
-                {brew === 'idle'    && 'Brew me a coffee'}
-                {brew === 'brewing' && 'Brewing…'}
-                {brew === 'ready'   && `☕ Served! (×${cups})`}
-              </span>
             </div>
           </div>
 
           {/* RIGHT — orbit */}
-          <div className="shrink-0 flex flex-col items-center gap-6">
+          <div className="shrink-0 flex flex-col items-center gap-6 scale-75 sm:scale-90 lg:scale-100 origin-center">
             <TechOrbit />
             <p className="font-code text-[10px] text-text-muted uppercase tracking-widest">Tech Stack</p>
           </div>

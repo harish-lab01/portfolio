@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { personal } from '../../data/portfolioData';
 import AuroraBlob from '../ui/AuroraBlob';
 import MagneticButton from '../ui/MagneticButton';
-import { FaGithub, FaLinkedin, FaEnvelope, FaCoffee, FaGamepad } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
 import harishPhoto from '../../assets/HARISH.png';
 
 // Faint background code snippets
@@ -100,7 +100,7 @@ export default function Hero() {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
               </span>
               <span className="text-[10px] font-code font-bold tracking-widest text-text-primary uppercase">
-                ✦ Available for Roles & Collabs
+                ✦ Open to Full-Time Roles
               </span>
             </div>
           </motion.div>
@@ -112,8 +112,8 @@ export default function Hero() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="font-display text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-text-primary mb-4 leading-[1.05]"
           >
-            Building Interfaces<br />
-            That <span className="font-display italic font-semibold bg-gradient-to-r from-primary-glow-from to-[#FF6B9D] bg-clip-text text-transparent">Feel</span>
+            Building Software<br />
+            That <span className="font-display italic font-semibold bg-gradient-to-r from-primary-glow-from to-[#FF6B9D] bg-clip-text text-transparent">Works</span>
           </motion.h1>
 
           {/* Subheading (Staggered Fade-in) */}
@@ -137,7 +137,7 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.35 }}
             className="text-base text-text-muted max-w-xl mb-10 leading-relaxed font-body"
           >
-            Hey! I'm a frontend developer and animator who crafts web experiences that don't just sit there, but react fluidly to the user. I spend my days writing clean React structures and building seamless bridges to backend .NET REST APIs.
+            Hey! I'm a Software Developer based in Chennai who builds complete web applications — clean React frontends, robust .NET APIs, and everything in between. I care about code that's fast, scalable, and genuinely great to use.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -202,7 +202,7 @@ export default function Hero() {
         </div>
 
         {/* Right Half — Hero Photo */}
-        <div className="lg:col-span-5 flex items-center justify-center relative min-h-[460px] lg:min-h-[540px]">
+        <div className="lg:col-span-5 flex items-center justify-center relative min-h-[320px] sm:min-h-[460px] lg:min-h-[540px]">
 
           {/* Ambient glow — soft, diffused, sits under the photo */}
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[280px] h-[180px] rounded-full bg-gradient-to-t from-primary-glow-from/20 via-[#FF6B9D]/10 to-transparent blur-3xl pointer-events-none" />
@@ -230,38 +230,20 @@ export default function Hero() {
 
             {/* Orbiting Badge: React (Top Left) */}
             <div
-              className="absolute -top-4 -left-8 glass px-3.5 py-1.5 rounded-full flex items-center gap-1.5 border border-border-glow shadow-md bg-white/90 select-none animate-[float-slow-1_6s_ease-in-out_infinite]"
+              className="hidden sm:flex absolute -top-4 -left-8 glass px-3.5 py-1.5 rounded-full items-center gap-1.5 border border-border-glow shadow-md bg-white/90 select-none animate-[float-slow-1_6s_ease-in-out_infinite]"
               style={{ animationDelay: '-1s' }}
             >
               <span className="text-cyan-500 animate-spin [animation-duration:8s]">⚛</span>
               <span className="text-[9px] font-code font-bold tracking-widest uppercase text-text-primary">React.js</span>
             </div>
 
-            {/* Orbiting Badge: Chennai Coffee (Bottom Left) */}
-            <div
-              className="absolute -bottom-4 -left-6 glass px-3.5 py-1.5 rounded-full flex items-center gap-1.5 border border-[#FFB347]/40 shadow-md bg-white/90 select-none animate-[float-slow-2_7s_ease-in-out_infinite]"
-              style={{ animationDelay: '-2.5s' }}
-            >
-              <span className="text-amber-600"><FaCoffee /></span>
-              <span className="text-[9px] font-code font-bold tracking-widest uppercase text-text-primary">Chennai Coffee</span>
-            </div>
-
             {/* Orbiting Badge: .NET API (Right Middle) */}
             <div
-              className="absolute top-[38%] -right-10 glass px-3.5 py-1.5 rounded-full flex items-center gap-1.5 border border-[#FF6B9D]/40 shadow-md bg-white/90 select-none animate-[float-slow-3_5s_ease-in-out_infinite]"
+              className="hidden sm:flex absolute top-[38%] -right-10 glass px-3.5 py-1.5 rounded-full items-center gap-1.5 border border-[#FF6B9D]/40 shadow-md bg-white/90 select-none animate-[float-slow-3_5s_ease-in-out_infinite]"
               style={{ animationDelay: '-0.5s' }}
             >
               <span className="text-pink-500">🛡️</span>
               <span className="text-[9px] font-code font-bold tracking-widest uppercase text-text-primary">.NET API</span>
-            </div>
-
-            {/* Orbiting Badge: Retro Gaming (Bottom Right) */}
-            <div
-              className="absolute -bottom-4 -right-8 glass px-3.5 py-1.5 rounded-full flex items-center gap-1.5 border border-[#45E5C8]/40 shadow-md bg-white/90 select-none animate-[float-slow-2_6.5s_ease-in-out_infinite]"
-              style={{ animationDelay: '-1.5s' }}
-            >
-              <span className="text-teal-500"><FaGamepad /></span>
-              <span className="text-[9px] font-code font-bold tracking-widest uppercase text-text-primary">Retro Gaming</span>
             </div>
 
             {/* Name tag at bottom */}

@@ -1,251 +1,319 @@
-import React, { useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { projects } from '../../data/portfolioData';
-import BrowserMockup from '../ui/BrowserMockup';
-import MagneticButton from '../ui/MagneticButton';
+import { FiExternalLink, FiCode, FiStar } from 'react-icons/fi';
 import AuroraBlob from '../ui/AuroraBlob';
+import BrowserMockup from '../ui/BrowserMockup';
 
-// Helper component for 3D Tilt Hover effect (vanilla mouse tracking, disabled on touch devices)
-function TiltCard({ children, className = '', maxTilt = 5, ...props }) {
-  const cardRef = useRef(null);
-  const [style, setStyle] = useState({
-    transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
-    transition: 'transform 0.5s ease'
-  });
+const MOCKUP_TYPE = { '01': 'dashboard', '02': 'safety', '03': 'chat', '05': 'ecommerce' };
 
-  const handleMouseMove = (e) => {
-    // Disable on touch devices
-    if (window.matchMedia('(pointer: coarse)').matches) return;
-
-    const card = cardRef.current;
-    if (!card) return;
-
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-
-    const rotX = -(y / (rect.height / 2)) * maxTilt;
-    const rotY = (x / (rect.width / 2)) * maxTilt;
-
-    setStyle({
-      transform: `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.02, 1.02, 1.02)`,
-      transition: 'transform 0.1s ease-out'
-    });
-  };
-
-  const handleMouseLeave = () => {
-    setStyle({
-      transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
-      transition: 'transform 0.5s ease'
-    });
-  };
-
+// ── Terminal mockup for JARVIS ───────────────────────────────────────────────
+function TerminalMockup() {
   return (
-    <div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={style}
-      className={`relative w-full h-full select-none cursor-pointer ${className}`}
-      {...props}
-    >
-      {children}
+    <div className="w-full rounded-2xl bg-[#0a0a0a] border border-white/10 p-6 font-code shadow-2xl">
+      <div className="flex items-center gap-1.5 pb-3 border-b border-white/10 mb-5">
+        <span className="w-3 h-3 rounded-full bg-red-500/80" />
+        <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
+        <span className="w-3 h-3 rounded-full bg-green-500/80" />
+        <span className="text-[11px] text-white/30 ml-3">jarvis@localhost:~</span>
+      </div>
+      <div className="text-sm flex flex-col gap-2">
+        <p className="text-white/40">&gt; ollama run jarvis-model</p>
+        <p className="text-green-400 animate-pulse">Initializing Jarvis AI assistant...</p>
+        <p className="text-white/80 mt-1">✓ Local LLM Connection Established.</p>
+        <p className="text-white/80">✓ Voice Automation Node Active.</p>
+        <p className="text-purple-400 mt-3">&gt; Ask Jarvis: "Are you offline?"</p>
+        <p className="text-amber-300">"Yes, running entirely offline on Ollama."</p>
+      </div>
     </div>
   );
 }
 
-export default function Projects() {
-  const getMockupType = (id) => {
-    if (id === '01') return 'ecommerce';
-    if (id === '02') return 'dashboard';
-    if (id === '03') return 'safety';
-    if (id === '04') return 'chat';
-    return 'dashboard'; // default
-  };
+// ── Single project section ───────────────────────────────────────────────────
+function ProjectSection({ proj, index }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-10%' });
+  const isEven = index % 2 === 0;
+  const isDark = proj.dark === true;
 
   return (
-    <div className="w-full flex flex-col">
-      {/* Projects Title Watermark Section */}
-      <div className="w-full bg-bg-ivory border-t border-border-glow/50 py-16 flex flex-col items-center">
-        <div className="max-w-7xl w-full mx-auto px-6 text-left">
-          <span className="text-[10px] font-code font-bold tracking-widest text-primary-glow-from uppercase">
-            Engineering Showcases
-          </span>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-text-primary tracking-tight mt-1">
-            Featured Projects
-          </h2>
-          <div className="w-12 h-1 bg-gradient-to-r from-primary-glow-from to-primary-glow-to mt-2 rounded-full" />
+    <div
+      ref={ref}
+      id={`projects-${proj.id}`}
+      className="relative w-full overflow-hidden"
+      style={{
+        background: isDark
+          ? `linear-gradient(135deg, #0a0a0f 0%, #0d0d14 100%)`
+          : index % 4 === 0
+            ? '#FAFAF7'
+            : index % 4 === 1
+              ? '#F5F4FF'
+              : index % 4 === 2
+                ? '#FFF5F9'
+                : '#F0FDFB',
+      }}
+    >
+      {/* Accent glow */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          width: '600px', height: '600px',
+          borderRadius: '50%',
+          background: `radial-gradient(circle, ${proj.accentColor}18 0%, transparent 65%)`,
+          filter: 'blur(60px)',
+          top: '50%', left: isEven ? '60%' : '10%',
+          transform: 'translate(-50%, -50%)',
+        }}
+      />
+
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-14 sm:py-24 lg:py-32">
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center ${!isEven ? 'lg:[&>*:first-child]:order-2' : ''}`}>
+
+          {/* ── Text side ── */}
+          <motion.div
+            initial={{ opacity: 0, x: isEven ? -40 : 40 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col gap-6"
+          >
+            {/* Project number + category */}
+            <div className="flex items-center gap-4">
+              <span
+                className="font-accent text-6xl font-bold leading-none select-none"
+                style={{ color: `${proj.accentColor}20` }}
+              >
+                {proj.id}
+              </span>
+              <div className="flex flex-col gap-1">
+                <span
+                  className="text-[9px] font-code font-bold tracking-[0.25em] uppercase px-2.5 py-1 rounded-lg self-start"
+                  style={{
+                    color: proj.accentColor,
+                    background: `${proj.accentColor}15`,
+                    border: `1px solid ${proj.accentColor}30`,
+                  }}
+                >
+                  {proj.category.split('·')[0].trim()}
+                </span>
+                {proj.badge && (
+                  <span
+                    className="text-[9px] font-code font-bold px-2.5 py-1 rounded-lg self-start"
+                    style={{
+                      color: proj.accentColor,
+                      background: `${proj.accentColor}15`,
+                      border: `1px solid ${proj.accentColor}30`,
+                    }}
+                  >
+                    {proj.badge}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Title */}
+            <div>
+              <h3
+                className="font-display font-bold text-3xl sm:text-4xl md:text-5xl leading-tight tracking-tight"
+                style={{ color: isDark ? '#fff' : '#0D0D0D' }}
+              >
+                {proj.title}
+              </h3>
+              <div
+                className="h-[3px] w-12 rounded-full mt-4"
+                style={{ background: `linear-gradient(90deg, ${proj.accentColor}, ${proj.accentColor}55)` }}
+              />
+            </div>
+
+            {/* Description */}
+            <p
+              className="font-body text-base leading-relaxed"
+              style={{ color: isDark ? 'rgba(255,255,255,0.6)' : '#6B6B7B' }}
+            >
+              {proj.description}
+            </p>
+
+            {/* Highlight box */}
+            <div
+              className="flex items-start gap-3 px-4 py-3.5 rounded-2xl"
+              style={{
+                background: `${proj.accentColor}0d`,
+                border: `1px solid ${proj.accentColor}25`,
+              }}
+            >
+              <FiStar size={14} className="shrink-0 mt-0.5" style={{ color: proj.accentColor }} />
+              <p
+                className="text-sm font-body leading-snug"
+                style={{ color: isDark ? 'rgba(255,255,255,0.6)' : '#6B6B7B' }}
+              >
+                {proj.highlight}
+              </p>
+            </div>
+
+            {/* Tech stack */}
+            <div className="flex flex-wrap gap-2">
+              {proj.tags.map(tag => (
+                <span
+                  key={tag}
+                  className="inline-flex items-center gap-1.5 text-xs font-code px-3 py-1.5 rounded-xl"
+                  style={{
+                    color: isDark ? 'rgba(255,255,255,0.5)' : '#6B6B7B',
+                    background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.8)',
+                    border: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(108,99,255,0.12)',
+                  }}
+                >
+                  <FiCode size={9} />
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            {/* CTA */}
+            {proj.links.length > 0 ? (
+              <div className="flex flex-wrap gap-3 pt-2">
+                {proj.links.map((link, li) => (
+                  <a
+                    key={link.url}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 font-code text-sm font-semibold px-6 py-3 rounded-2xl transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                    style={
+                      li === 0
+                        ? {
+                            background: proj.accentColor,
+                            color: '#fff',
+                            boxShadow: `0 4px 20px ${proj.accentColor}40`,
+                          }
+                        : {
+                            background: 'transparent',
+                            color: proj.accentColor,
+                            border: `1.5px solid ${proj.accentColor}50`,
+                          }
+                    }
+                  >
+                    <FiExternalLink size={14} />
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            ) : proj.badge && (
+              <span
+                className="self-start text-xs font-code font-bold px-4 py-2 rounded-xl"
+                style={{
+                  color: proj.accentColor,
+                  background: `${proj.accentColor}12`,
+                  border: `1px solid ${proj.accentColor}30`,
+                }}
+              >
+                {proj.badge}
+              </span>
+            )}
+          </motion.div>
+
+          {/* ── Visual side ── */}
+          <motion.div
+            initial={{ opacity: 0, x: isEven ? 40 : -40, scale: 0.95 }}
+            animate={inView ? { opacity: 1, x: 0, scale: 1 } : {}}
+            transition={{ duration: 0.75, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="flex items-center justify-center"
+          >
+            <div
+              className="w-full rounded-3xl p-6 md:p-8"
+              style={{
+                background: isDark
+                  ? 'rgba(255,255,255,0.03)'
+                  : `linear-gradient(135deg, ${proj.accentColor}0a, ${proj.accentColor}18)`,
+                border: `1px solid ${proj.accentColor}20`,
+                boxShadow: `0 24px 80px ${proj.accentColor}18`,
+              }}
+            >
+              {proj.id === '04'
+                ? <TerminalMockup />
+                : <BrowserMockup
+                    url={proj.links[0]?.label || 'app.dev'}
+                    type={MOCKUP_TYPE[proj.id] || 'dashboard'}
+                    className="w-full"
+                  />
+              }
+            </div>
+          </motion.div>
+
         </div>
       </div>
 
-      {projects.map((proj, idx) => {
-        const isFlipped = idx % 2 === 1; // Alternating layout
-        const isDark = proj.dark === true;
-        const mockupType = getMockupType(proj.id);
-        const displayUrl = proj.links[0]?.label || "jarvis.ai";
+      {/* Bottom separator */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-px"
+        style={{
+          background: `linear-gradient(90deg, transparent, ${proj.accentColor}30, transparent)`,
+        }}
+      />
+    </div>
+  );
+}
 
-        return (
-          <section
-            key={proj.id}
-            id={`projects-${proj.id}`}
-            className={`
-              relative w-full py-20 lg:py-32 flex items-center justify-center overflow-hidden border-b border-border-glow/30
-              ${isDark ? 'bg-[#0D0D0D] text-bg-ivory' : 'bg-bg-ivory text-text-primary'}
-            `}
+// ── Main section ─────────────────────────────────────────────────────────────
+export default function Projects() {
+  const headerRef = useRef(null);
+  const inView = useInView(headerRef, { once: true, margin: '-80px' });
+
+  return (
+    <div id="projects" className="w-full">
+
+      {/* ── Section header ── */}
+      <div
+        ref={headerRef}
+        className="relative w-full bg-bg-ivory border-t border-border-glow/40 overflow-hidden"
+      >
+        <AuroraBlob color="violet" size="w-[500px] h-[500px]" className="-top-32 -right-32" opacity="opacity-[0.06]" animationIndex={1} />
+
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-14 sm:py-20">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
           >
-            {/* Ambient Background Glow (matched to project accent) */}
-            <div
-              className="absolute inset-0 opacity-10 pointer-events-none"
-              style={{
-                background: `radial-gradient(circle at ${
-                  isFlipped ? '25%' : '75%'
-                } 50%, ${proj.accentColor}, transparent 55%)`
-              }}
-            />
-            {isDark && (
-              <AuroraBlob color="teal" size="w-[500px] h-[500px]" className="left-[-10%] top-[-10%]" opacity="opacity-10" animationIndex={3} />
-            )}
+            <span className="inline-flex items-center gap-1 text-[10px] font-code font-semibold tracking-widest text-primary-glow-from uppercase mb-4">
+              <span className="w-1 h-1 rounded-full bg-primary-glow-from inline-block" />
+              Engineering Showcases
+            </span>
 
-            {/* Scroll-Triggered Content Wrapper */}
-            <motion.div
-              initial={{ opacity: 0, y: 60, filter: 'blur(8px)' }}
-              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              viewport={{ once: true, margin: '-15%' }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center z-10"
-            >
-              
-              {/* Text column */}
-              <div
-                className={`
-                  lg:col-span-6 flex flex-col justify-center text-left order-2
-                  ${isFlipped ? 'lg:order-2 lg:col-start-7' : 'lg:order-1'}
-                `}
-              >
-                {/* Project Number */}
-                <div className="absolute top-10 right-12 hidden md:block select-none">
-                  <span className={`font-accent text-[9rem] opacity-[0.06] font-bold ${isDark ? 'text-white' : 'text-text-primary'}`}>
-                    {proj.id}
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+              <div>
+                <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-text-primary leading-none tracking-tight">
+                  Featured{' '}
+                  <span className="bg-gradient-to-r from-primary-glow-from to-primary-glow-to bg-clip-text text-transparent">
+                    Projects
                   </span>
-                </div>
-
-                {/* Category chip */}
-                <div className="self-start mb-4">
-                  <div
-                    className={`
-                      glass px-3.5 py-1 rounded-full text-[10px] font-code font-bold tracking-wider uppercase
-                      ${isDark ? 'border-white/10 bg-white/5 text-white/80' : 'border-border-glow bg-white/40 text-primary-glow-from'}
-                    `}
-                  >
-                    {proj.category}
-                  </div>
-                </div>
-
-                {/* Headline */}
-                <h3 className="font-display text-3xl md:text-4xl font-bold tracking-tight mb-4 leading-tight">
-                  {proj.title}
-                </h3>
-
-                {/* Body Description */}
-                <p className={`text-sm leading-relaxed mb-6 font-body ${isDark ? 'text-gray-400' : 'text-text-muted'}`}>
-                  {proj.description}
+                </h2>
+                <div className="w-14 h-[3px] bg-gradient-to-r from-primary-glow-from to-primary-glow-to mt-4 rounded-full" />
+                <p className="font-body text-text-muted text-sm mt-4 max-w-lg leading-relaxed">
+                  Production-grade applications I've designed, built, and shipped — each one live and battle-tested.
                 </p>
+              </div>
 
-                {/* Highlight Badge */}
-                <div className="mb-8 text-xs font-code flex items-center gap-2">
-                  <span className="text-[#FF6B9D] font-bold">✦</span>
-                  <span className={isDark ? 'text-white/70' : 'text-text-muted'}>{proj.highlight}</span>
-                </div>
-
-                {/* Tech tags */}
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {proj.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className={`
-                        text-[10px] font-code px-2.5 py-1 rounded-md border
-                        ${
-                          isDark
-                            ? 'border-white/5 bg-white/5 text-white/70'
-                            : 'border-border-glow bg-white/30 text-text-muted'
-                        }
-                      `}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {/* CTA Links */}
-                {proj.links.length > 0 ? (
-                  <div className="flex flex-wrap gap-4">
-                    {proj.links.map((link) => (
-                      <MagneticButton
-                        key={link.url}
-                        as="a"
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`
-                          px-6 py-3 rounded-full font-code text-xs uppercase tracking-wider transition-all
-                          ${
-                            isDark
-                              ? 'bg-white text-black hover:bg-transparent hover:text-white border border-white'
-                              : 'bg-text-primary text-bg-ivory hover:bg-transparent hover:text-text-primary border border-text-primary'
-                          }
-                        `}
-                      >
-                        {link.label} &rarr;
-                      </MagneticButton>
-                    ))}
+              <div className="flex gap-6 sm:gap-8 shrink-0 sm:border-l sm:border-border-glow/40 sm:pl-8">
+                {[
+                  { val: projects.length, label: 'Projects' },
+                  { val: '4+', label: 'Live Apps' },
+                  { val: '100%', label: 'Shipped' },
+                ].map(({ val, label }) => (
+                  <div key={label} className="text-center">
+                    <div className="font-accent text-3xl sm:text-4xl font-bold text-primary-glow-from leading-none">{val}</div>
+                    <div className="text-[10px] font-code text-text-muted uppercase tracking-widest mt-1">{label}</div>
                   </div>
-                ) : (
-                  proj.badge && (
-                    <span className="text-xs font-code uppercase tracking-wider text-green-500 font-bold bg-green-500/10 px-3 py-1.5 rounded-full border border-green-500/20 self-start">
-                      {proj.badge}
-                    </span>
-                  )
-                )}
-
+                ))}
               </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
 
-              {/* Mockup Column */}
-              <div
-                className={`
-                  lg:col-span-6 flex items-center justify-center order-1 relative
-                  ${isFlipped ? 'lg:order-1 lg:col-span-5 lg:col-start-1' : 'lg:order-2 lg:col-start-7'}
-                `}
-              >
-                <TiltCard maxTilt={5} data-cursor="explore" className="flex items-center justify-center">
-                  {proj.id === '05' ? (
-                    // JARVIS AI Custom Dark Terminal Mockup
-                    <div className="relative w-full max-w-[480px] rounded-2xl bg-black border border-white/10 p-5 font-code shadow-2xl shadow-green-500/5 select-none overflow-hidden aspect-video text-left">
-                      <div className="flex items-center gap-1.5 pb-3 border-b border-white/10 mb-4">
-                        <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 block"></span>
-                        <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80 block"></span>
-                        <span className="w-2.5 h-2.5 rounded-full bg-green-500/80 block"></span>
-                        <span className="text-[10px] text-white/30 ml-2">jarvis@localhost:~</span>
-                      </div>
-                      <div className="text-green-400 text-xs flex flex-col gap-1">
-                        <p className="text-white/50">&gt; ollama run jarvis-model</p>
-                        <p className="text-green-500 animate-pulse">Initializing Jarvis AI assistant...</p>
-                        <p className="mt-2 text-white/90">✓ Local LLM Connection Established.</p>
-                        <p className="text-white/90">✓ Voice Automation Node Active.</p>
-                        <p className="mt-4 text-purple-400">&gt; Ask Jarvis: "Are you offline?"</p>
-                        <p className="text-amber-300">"Yes, running entirely offline on Ollama."</p>
-                      </div>
-                    </div>
-                  ) : (
-                    // Regular Browser Mockup
-                    <BrowserMockup url={displayUrl} type={mockupType} className="w-full" />
-                  )}
-                </TiltCard>
-              </div>
+      {/* ── Project sections ── */}
+      {projects.map((proj, i) => (
+        <ProjectSection key={proj.id} proj={proj} index={i} />
+      ))}
 
-            </motion.div>
-          </section>
-        );
-      })}
     </div>
   );
 }
