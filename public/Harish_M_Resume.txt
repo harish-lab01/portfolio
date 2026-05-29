@@ -1,0 +1,84 @@
+================================================================================
+                                   HARISH M
+                      Frontend & UI Developer (React.js)
+================================================================================
+📍 Chennai, TN, India
+📧 harish.tech02@gmail.com
+📞 +91-9361070003
+🔗 linkedin.com/in/harish43
+🔗 github.com/harish43
+💼 Portfolio: harish.dev
+================================================================================
+
+PROFESSIONAL SUMMARY
+--------------------
+Dynamic and detail-oriented Frontend Developer with 1+ years of production
+experience specializing in React.js, modern JavaScript (ES6+), and seamless
+integration with ASP.NET Core APIs. Proven track record of shipping production-
+grade e-commerce platforms, workplace safety tools, and enterprise HR dashboards
+at Vivify Technocrats. Obsessed with high-performance UI optimization, pixel-
+perfect responsive design, and fluid custom animations (Framer Motion, GSAP).
+
+CORE TECHNICAL SKILLS
+---------------------
+* Frontend Core: React.js, JavaScript (ES6+), HTML5, CSS3, Tailwind CSS
+* State & Integration: RESTful APIs, Axios, Redux Toolkit, Zustand, Context API
+* Backend Proximity: .NET API Consumption, Firebase Auth, Realtime DB
+* Performance Optimization: Component Memoization, Lazy Loading, API Batching
+* Developer Tools: Git, GitHub, VS Code, npm, Cursor, Claude AI, Vercel
+
+WORK EXPERIENCE
+---------------
+Vivify Technocrats | Chennai, TN, India
+Software Developer (2025 – 2026)
+* Designed and delivered 4+ high-impact enterprise modules, including live
+  e-commerce platforms, real-time employee portals, and safety compliance trackers.
+* Integrated responsive React frontends with ASP.NET Core APIs, handling complex
+  role-based authentication, token management, and secure route guards.
+* Optimized network requests through smart API call batching and debouncing,
+  improving page load speeds by 25%.
+* Implemented real-time dashboard notifications using Firebase, reducing manual
+  HR tracking overhead by 100%.
+* Collaborated closely in agile sprints, accelerating team velocity by ~30%
+  through reusable component libraries and clean atomic styling.
+
+KEY PROJECTS
+------------
+1. Live E-Commerce Platforms (harisilks.com | adhityacrackers.com)
+   * Tech Stack: React.js, Tailwind CSS, .NET API, Axios, Framer Motion
+   * Built dual production-grade e-commerce architectures with responsive product
+     catalogs, full shopping carts, bulk pricing structures, and order checkout flows.
+   * Result: Achieved zero critical data-synchronization bugs during peak traffic.
+
+2. EmployeeHub (vivifysoft.in/employeehub)
+   * Tech Stack: React, .NET Core, JWT Role Auth, Firebase Real-Time Events
+   * Replaced manual paper workflows with an end-to-end HR dashboard supporting
+     leave applications, advance salary calculations, and live attendance tracking.
+   * Result: 100% of internal manual HR tracking transitioned to digital.
+
+3. Vivify Safety & Attendance System (vivifysoft.in/safety)
+   * Tech Stack: React, Tailwind CSS, .NET Core API, Custom Video Player
+   * Implemented punch-in/punch-out shifts with proximity checks, and a video training
+     module that enforces mandatory safety course completion per employee.
+   * Result: Achieved 100% training compliance compliance tracking.
+
+4. Chat Hub (chat-hub-rouge.vercel.app/login)
+   * Tech Stack: React, Firebase Auth, Firebase Realtime DB, Vercel
+   * Created a WhatsApp-inspired chat portal featuring online/offline presence
+     tracking, typing indicator streams, and push notifications.
+
+5. JARVIS AI Assistant (Personal Project)
+   * Tech Stack: Python, Ollama, Local LLMs, Voice Automation
+   * Built a private voice-controlled helper that runs entirely offline, automating
+     desktop routines and executing customized modular shell tasks.
+
+EDUCATION & CERTIFICATIONS
+--------------------------
+* B.Tech in Computer Science & Engineering (2020 – 2024)
+  Bharathidasan University | CSE Division (Grade: 68%)
+* MERN Stack Certification (2023 – 2024)
+  Error Makes Clever Academy (Advanced Full-Stack Engineering Bootcamp)
+
+================================================================================
+                    References available upon request.
+================================================================================
