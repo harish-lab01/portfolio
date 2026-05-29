@@ -7,23 +7,6 @@ import { IoLocationOutline } from 'react-icons/io5';
 import { FaCoffee } from 'react-icons/fa';
 import harishAvatar from '../../assets/harish_avatar.png';
 
-/* ─── tiny helpers ─────────────────────────────────────────────── */
-function Tag({ children }) {
-  return (
-    <span className="inline-flex items-center gap-1 text-[10px] font-code font-semibold tracking-widest text-primary-glow-from uppercase">
-      <span className="w-1 h-1 rounded-full bg-primary-glow-from inline-block" />
-      {children}
-    </span>
-  );
-}
-
-const timeline = [
-  { year: '2020', title: 'B.Tech Begins',       sub: 'Bharathidasan University' },
-  { year: '2023', title: 'MERN Certification',  sub: 'Error Makes Clever' },
-  { year: '2024', title: 'B.Tech Completed',    sub: 'CSE · 68%' },
-  { year: '2025', title: 'Software Developer',  sub: 'Vivify Technocrats' },
-];
-
 /* ─── main component ───────────────────────────────────────────── */
 export default function About() {
   const scramble = useTextScramble('About Harish', 600, true);
@@ -71,7 +54,10 @@ export default function About() {
         {/* ══════════════════════════════════════════════════════════
             SECTION LABEL
         ══════════════════════════════════════════════════════════ */}
-        <Tag>Who I am</Tag>
+        <span className="inline-flex items-center gap-1 text-[10px] font-code font-semibold tracking-widest text-primary-glow-from uppercase">
+          <span className="w-1 h-1 rounded-full bg-primary-glow-from inline-block" />
+          Who I am
+        </span>
 
         {/* ══════════════════════════════════════════════════════════
             HERO SPLIT — left: big heading + bio  |  right: orbit
@@ -167,55 +153,6 @@ export default function About() {
               />
             </div>
           ))}
-        </div>
-
-        {/* ══════════════════════════════════════════════════════════
-            TIMELINE — horizontal flowing strip
-        ══════════════════════════════════════════════════════════ */}
-        <div className="mt-20">
-          <Tag>Journey</Tag>
-
-          <div className="mt-8 relative">
-            {/* continuous line */}
-            <div className="hidden md:block absolute top-5 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border-glow to-transparent" />
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0">
-              {timeline.map((step, i) => (
-                <div key={i} className="relative flex flex-col items-center text-center group">
-                  {/* dot */}
-                  <div className="relative z-10 w-10 h-10 rounded-full bg-bg-ivory border border-border-glow flex items-center justify-center mb-4 shadow-sm group-hover:border-primary-glow-from group-hover:shadow-[0_0_16px_rgba(108,99,255,0.25)] transition-all duration-300">
-                    <span className="font-accent text-sm text-primary-glow-from">{step.year.slice(-2)}</span>
-                  </div>
-                  <span className="font-accent text-2xl text-primary-glow-from leading-none">{step.year}</span>
-                  <span className="mt-1.5 font-display font-semibold text-sm text-text-primary">{step.title}</span>
-                  <span className="mt-0.5 font-code text-[10px] text-text-muted uppercase tracking-wider">{step.sub}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* ══════════════════════════════════════════════════════════
-            SKILLS — inline tag cloud, no boxes
-        ══════════════════════════════════════════════════════════ */}
-        <div className="mt-20">
-          <Tag>Skills</Tag>
-          <div className="mt-6 flex flex-wrap gap-3">
-            {[
-              'React.js', 'JavaScript ES6+', 'Tailwind CSS', 'HTML5 / CSS3',
-              '.NET API', 'Axios / Fetch', 'Role-Based Auth',
-              'Firebase Auth', 'Firebase Realtime DB',
-              'Git & GitHub', 'Node.js', 'Python',
-              'Framer Motion', 'REST APIs', 'VS Code',
-            ].map((skill) => (
-              <span
-                key={skill}
-                className="px-3 py-1.5 rounded-full text-xs font-code font-medium text-text-muted border border-border-glow bg-white/60 hover:border-primary-glow-from/50 hover:text-primary-glow-from hover:bg-primary-glow-from/5 transition-all duration-200 cursor-default"
-              >
-                {skill}
-              </span>
-            ))}
-          </div>
         </div>
 
       </div>

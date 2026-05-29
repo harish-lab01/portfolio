@@ -1,306 +1,263 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { skills } from '../../data/portfolioData';
-
-// ── Skill proficiency map ────────────────────────────────────────────────────
-const PROFICIENCY = {
-  'React.js': 95, 'JavaScript ES6+': 92, 'HTML5': 98, 'CSS3': 90, 'Tailwind CSS': 93,
-  'RESTful API': 88, '.NET API Consumption': 85, 'Axios/Fetch': 90,
-  'Role-Based Auth': 82, 'Firebase Auth': 80, 'Firebase Realtime DB': 78,
-  'React State Management': 87, 'Component Optimization': 83, 'API Call Batching': 79,
-  'Git': 90, 'GitHub': 90, 'VS Code': 95, 'Node.js/npm': 82,
-  'Cursor AI': 88, 'Claude AI': 85, 'Kiro': 80,
-};
+import { FiLayout, FiLink, FiZap, FiTool } from 'react-icons/fi';
 
 const CATEGORY_META = {
   frontend: {
-    label: 'Frontend',
-    emoji: '🎨',
-    accent: '#6C63FF',
-    desc: 'Crafting pixel-perfect, responsive interfaces',
+    label: 'Frontend Development',
+    Icon: FiLayout,
+    sub: 'UI · Styling · Frameworks',
   },
   integration: {
-    label: 'API & Auth',
-    emoji: '🔗',
-    accent: '#FF6B9D',
-    desc: 'Connecting frontends to powerful backends',
+    label: 'API & Integration',
+    Icon: FiLink,
+    sub: 'REST · Auth · Firebase',
   },
   performance: {
     label: 'Performance',
-    emoji: '⚡',
-    accent: '#45E5C8',
-    desc: 'Optimizing for speed and smooth UX',
+    Icon: FiZap,
+    sub: 'Optimization · State · Batching',
   },
   tools: {
     label: 'Dev Tools',
-    emoji: '🛠',
-    accent: '#FFB347',
-    desc: 'The toolkit that powers my workflow',
+    Icon: FiTool,
+    sub: 'Workflow · AI · Version Control',
   },
 };
 
-// ── Animated skill bar ───────────────────────────────────────────────────────
-function SkillBar({ name, value, accent, delay = 0 }) {
-  const [width, setWidth] = useState(0);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setWidth(value), delay);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.3 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [value, delay]);
-
+// ── Individual skill tag ─────────────────────────────────────────────────────
+function SkillTag({ name, delay }) {
+  const [hovered, setHovered] = useState(false);
   return (
-    <div ref={ref} className="group">
-      <div className="flex justify-between items-center mb-1.5">
-        <span className="text-sm font-body font-medium text-white/80 group-hover:text-white transition-colors duration-200">
-          {name}
-        </span>
-        <span
-          className="text-xs font-code font-bold tabular-nums"
-          style={{ color: accent }}
-        >
-          {width}%
-        </span>
-      </div>
-      <div className="h-1.5 w-full rounded-full bg-white/10 overflow-hidden">
-        <div
-          className="h-full rounded-full transition-all duration-1000 ease-out"
-          style={{
-            width: `${width}%`,
-            background: `linear-gradient(90deg, ${accent}99, ${accent})`,
-            boxShadow: `0 0 8px ${accent}66`,
-          }}
-        />
-      </div>
-    </div>
+    <motion.span
+      initial={{ opacity: 0, y: 8 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay, ease: [0.22, 1, 0.36, 1] }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-body font-medium cursor-default select-none transition-all duration-200"
+      style={{
+        background: hovered
+          ? 'rgba(108,99,255,0.08)'
+          : 'rgba(255,255,255,0.6)',
+        border: `1px solid ${hovered ? 'rgba(108,99,255,0.25)' : 'rgba(108,99,255,0.1)'}`,
+        color: hovered ? '#6C63FF' : '#3D3D4E',
+        boxShadow: hovered
+          ? '0 4px 16px rgba(108,99,255,0.1)'
+          : '0 1px 3px rgba(0,0,0,0.04)',
+        transform: hovered ? 'translateY(-2px)' : 'none',
+        backdropFilter: 'blur(8px)',
+      }}
+    >
+      <span
+        className="w-1.5 h-1.5 rounded-full shrink-0 transition-colors duration-200"
+        style={{ background: hovered ? '#6C63FF' : '#C4C4D4' }}
+      />
+      {name}
+    </motion.span>
   );
 }
 
-// ── Category card ────────────────────────────────────────────────────────────
-function CategoryCard({ category, items, meta, index }) {
+// ── Single category card ─────────────────────────────────────────────────────
+function SkillCard({ category, items, cardIndex }) {
+  const meta = CATEGORY_META[category];
+  const { Icon } = meta;
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-60px' });
   const [hovered, setHovered] = useState(false);
 
   return (
-    <div
-      className="relative rounded-2xl p-6 flex flex-col gap-5 cursor-default transition-all duration-500"
-      style={{
-        background: hovered
-          ? `linear-gradient(135deg, rgba(13,13,13,0.95), rgba(13,13,13,0.85))`
-          : 'rgba(13,13,13,0.7)',
-        border: `1px solid ${hovered ? meta.accent + '55' : 'rgba(255,255,255,0.07)'}`,
-        boxShadow: hovered ? `0 0 40px ${meta.accent}22, inset 0 0 30px ${meta.accent}08` : 'none',
-        backdropFilter: 'blur(20px)',
-        transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
-      }}
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 36 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: cardIndex * 0.1, ease: [0.22, 1, 0.36, 1] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      className="relative rounded-3xl flex flex-col gap-5 p-7 transition-all duration-400"
+      style={{
+        background: hovered
+          ? 'rgba(255,255,255,0.85)'
+          : 'rgba(255,255,255,0.55)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        border: `1px solid ${hovered ? 'rgba(108,99,255,0.2)' : 'rgba(108,99,255,0.08)'}`,
+        boxShadow: hovered
+          ? '0 16px 48px rgba(108,99,255,0.1), 0 2px 8px rgba(0,0,0,0.04)'
+          : '0 2px 12px rgba(0,0,0,0.04)',
+        transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
+      }}
     >
-      {/* Corner accent */}
+      {/* Subtle top accent line */}
       <div
-        className="absolute top-0 right-0 w-20 h-20 rounded-bl-[60px] rounded-tr-2xl opacity-10 transition-opacity duration-500"
-        style={{ background: meta.accent, opacity: hovered ? 0.15 : 0.06 }}
+        className="absolute top-0 left-8 right-8 h-px rounded-full transition-opacity duration-400"
+        style={{
+          background: 'linear-gradient(90deg, transparent, rgba(108,99,255,0.4), transparent)',
+          opacity: hovered ? 1 : 0.4,
+        }}
       />
 
-      {/* Header */}
-      <div className="flex items-start justify-between">
+      {/* Card header */}
+      <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0"
-            style={{ background: `${meta.accent}18`, border: `1px solid ${meta.accent}33` }}
+            className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300"
+            style={{
+              background: hovered ? 'rgba(108,99,255,0.12)' : 'rgba(108,99,255,0.06)',
+              border: '1px solid rgba(108,99,255,0.15)',
+            }}
           >
-            {meta.emoji}
+            <Icon size={17} style={{ color: '#6C63FF' }} />
           </div>
           <div>
-            <h3 className="font-display font-bold text-white text-base leading-tight">
+            <h3 className="font-display font-bold text-text-primary text-base leading-tight">
               {meta.label}
             </h3>
-            <p className="text-[10px] font-code text-white/40 mt-0.5">{meta.desc}</p>
+            <p className="text-[10px] font-code text-text-muted mt-0.5 tracking-wide">
+              {meta.sub}
+            </p>
           </div>
         </div>
         <span
-          className="text-[10px] font-code font-bold px-2 py-0.5 rounded-md shrink-0"
-          style={{ color: meta.accent, background: `${meta.accent}18`, border: `1px solid ${meta.accent}30` }}
+          className="text-[10px] font-code font-bold px-2.5 py-1 rounded-lg shrink-0"
+          style={{
+            color: '#6C63FF',
+            background: 'rgba(108,99,255,0.07)',
+            border: '1px solid rgba(108,99,255,0.15)',
+          }}
         >
-          {items.length} skills
+          {items.length}
         </span>
       </div>
 
-      {/* Skill bars */}
-      <div className="flex flex-col gap-3">
+      {/* Divider */}
+      <div
+        className="h-px w-full"
+        style={{ background: 'linear-gradient(90deg, rgba(108,99,255,0.15), transparent)' }}
+      />
+
+      {/* Skill tags */}
+      <div className="flex flex-wrap gap-2">
         {items.map((skill, i) => (
-          <SkillBar
+          <SkillTag
             key={skill}
             name={skill}
-            value={PROFICIENCY[skill] || 80}
-            accent={meta.accent}
-            delay={index * 100 + i * 80}
+            delay={cardIndex * 0.06 + i * 0.04}
           />
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
-// ── Main Skills section ──────────────────────────────────────────────────────
+// ── Main section ─────────────────────────────────────────────────────────────
 export default function Skills() {
-  const [visible, setVisible] = useState(false);
   const sectionRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.1 }
-    );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
+  const inView = useInView(sectionRef, { once: true, margin: '-80px' });
   const allSkills = Object.values(skills).flat();
-  const totalSkills = allSkills.length;
 
   return (
     <section
       id="skills"
       ref={sectionRef}
-      className="relative py-28 w-full overflow-hidden"
-      style={{ background: 'linear-gradient(180deg, #0a0a0f 0%, #0d0d14 50%, #0a0a0f 100%)' }}
+      className="relative py-28 w-full overflow-hidden bg-bg-ivory border-t border-border-glow/40"
     >
-      {/* Ambient grid background */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(108,99,255,0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(108,99,255,0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: '60px 60px',
-        }}
-      />
-
-      {/* Radial glow spots */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(108,99,255,0.12) 0%, transparent 70%)', filter: 'blur(40px)' }} />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(69,229,200,0.10) 0%, transparent 70%)', filter: 'blur(40px)' }} />
-      <div className="absolute top-1/2 right-1/3 w-64 h-64 rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(255,107,157,0.08) 0%, transparent 70%)', filter: 'blur(40px)' }} />
+      {/* Ambient blobs — same as About section */}
+      <div className="pointer-events-none absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full bg-primary-glow-from/5 blur-[120px]" />
+      <div className="pointer-events-none absolute bottom-0 -left-20 w-[400px] h-[400px] rounded-full bg-aurora-pink/4 blur-[100px]" />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6">
 
-        {/* ── Section header ── */}
-        <div
-          className="mb-16 transition-all duration-700"
-          style={{ opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(30px)' }}
+        {/* ── Header ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-14"
         >
+          {/* Label */}
+          <span className="inline-flex items-center gap-1 text-[10px] font-code font-semibold tracking-widest text-primary-glow-from uppercase mb-4">
+            <span className="w-1 h-1 rounded-full bg-primary-glow-from inline-block" />
+            Technical Arsenal
+          </span>
+
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div>
-              <span className="inline-flex items-center gap-2 text-[10px] font-code font-bold tracking-[0.3em] uppercase mb-3"
-                style={{ color: '#6C63FF' }}>
-                <span className="w-4 h-px bg-[#6C63FF]" />
-                Technical Arsenal
-                <span className="w-4 h-px bg-[#6C63FF]" />
-              </span>
-              <h2 className="font-display text-5xl md:text-6xl font-bold text-white leading-none tracking-tight">
+              <h2 className="font-display text-5xl md:text-6xl font-bold text-text-primary leading-none tracking-tight">
                 Skills &{' '}
-                <span
-                  className="relative inline-block"
-                  style={{
-                    background: 'linear-gradient(135deg, #6C63FF, #FF6B9D, #45E5C8)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                  }}
-                >
+                <span className="bg-gradient-to-r from-primary-glow-from to-primary-glow-to bg-clip-text text-transparent">
                   Expertise
                 </span>
               </h2>
-              <p className="font-body text-white/40 text-sm mt-3 max-w-md">
-                A curated breakdown of my technical proficiency across frontend, integration, performance, and tooling.
+              <div className="w-14 h-[3px] bg-gradient-to-r from-primary-glow-from to-primary-glow-to mt-4 rounded-full" />
+              <p className="font-body text-text-muted text-sm mt-4 max-w-md leading-relaxed">
+                Technologies and tools I use to build fast, beautiful, production-ready web applications.
               </p>
             </div>
 
-            {/* Stats strip */}
-            <div className="flex gap-6 shrink-0">
+            {/* Stats — same style as About stats row */}
+            <div className="flex gap-8 shrink-0 border-l border-border-glow/40 pl-8">
               {[
-                { val: totalSkills, label: 'Total Skills', color: '#6C63FF' },
-                { val: '95%', label: 'React Mastery', color: '#FF6B9D' },
-                { val: '1+', label: 'Years Pro', color: '#45E5C8' },
-              ].map(({ val, label, color }) => (
+                { val: allSkills.length, label: 'Technologies' },
+                { val: '4', label: 'Domains' },
+                { val: '1+', label: 'Years Exp' },
+              ].map(({ val, label }) => (
                 <div key={label} className="text-center">
-                  <div className="font-accent text-3xl font-bold" style={{ color }}>{val}</div>
-                  <div className="text-[10px] font-code text-white/40 mt-0.5 whitespace-nowrap">{label}</div>
+                  <div className="font-accent text-4xl font-bold text-primary-glow-from leading-none">{val}</div>
+                  <div className="text-[10px] font-code text-text-muted uppercase tracking-widest mt-1">{label}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Divider */}
-          <div className="mt-8 h-px w-full"
-            style={{ background: 'linear-gradient(90deg, transparent, rgba(108,99,255,0.4), rgba(255,107,157,0.3), rgba(69,229,200,0.3), transparent)' }} />
-        </div>
+          {/* Full-width border — same as About stats divider */}
+          <div className="mt-10 h-px w-full bg-border-glow/40" />
+        </motion.div>
 
-        {/* ── Skill category cards grid ── */}
+        {/* ── 2×2 card grid ── */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {Object.entries(skills).map(([category, items], index) => {
-            const meta = CATEGORY_META[category] || { label: category, emoji: '💡', accent: '#6C63FF', desc: '' };
-            return (
-              <div
-                key={category}
-                className="transition-all duration-700"
-                style={{
-                  opacity: visible ? 1 : 0,
-                  transform: visible ? 'translateY(0)' : 'translateY(40px)',
-                  transitionDelay: `${index * 120 + 200}ms`,
-                }}
-              >
-                <CategoryCard category={category} items={items} meta={meta} index={index} />
-              </div>
-            );
-          })}
-        </div>
-
-        {/* ── Bottom floating pill strip ── */}
-        <div
-          className="mt-12 flex flex-wrap justify-center gap-3 transition-all duration-700"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? 'translateY(0)' : 'translateY(20px)',
-            transitionDelay: '700ms',
-          }}
-        >
-          {allSkills.map((skill, i) => (
-            <span
-              key={skill}
-              className="text-xs font-code px-3 py-1.5 rounded-full transition-all duration-300 hover:scale-105 cursor-default"
-              style={{
-                color: 'rgba(255,255,255,0.5)',
-                background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.08)',
-              }}
-              onMouseEnter={e => {
-                const colors = ['#6C63FF', '#FF6B9D', '#45E5C8', '#FFB347'];
-                const c = colors[i % colors.length];
-                e.currentTarget.style.color = c;
-                e.currentTarget.style.borderColor = c + '55';
-                e.currentTarget.style.background = c + '12';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.color = 'rgba(255,255,255,0.5)';
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
-                e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
-              }}
-            >
-              {skill}
-            </span>
+          {Object.entries(skills).map(([category, items], i) => (
+            <SkillCard
+              key={category}
+              category={category}
+              items={items}
+              cardIndex={i}
+            />
           ))}
         </div>
+
+        {/* ── Scrolling ticker — same style as About section ── */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.7 }}
+          className="mt-14 border-t border-border-glow/40 pt-10 relative overflow-hidden"
+        >
+          <div className="absolute left-0 top-0 bottom-0 w-16 z-10 pointer-events-none"
+            style={{ background: 'linear-gradient(90deg, #FAFAF7, transparent)' }} />
+          <div className="absolute right-0 top-0 bottom-0 w-16 z-10 pointer-events-none"
+            style={{ background: 'linear-gradient(270deg, #FAFAF7, transparent)' }} />
+
+          <div className="flex gap-3 animate-marquee whitespace-nowrap">
+            {[...allSkills, ...allSkills].map((skill, i) => (
+              <span
+                key={i}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-code shrink-0"
+                style={{
+                  background: 'rgba(255,255,255,0.6)',
+                  border: '1px solid rgba(108,99,255,0.1)',
+                  color: '#6B6B7B',
+                  backdropFilter: 'blur(8px)',
+                }}
+              >
+                <span className="w-1 h-1 rounded-full bg-primary-glow-from/40" />
+                {skill}
+              </span>
+            ))}
+          </div>
+        </motion.div>
 
       </div>
     </section>
