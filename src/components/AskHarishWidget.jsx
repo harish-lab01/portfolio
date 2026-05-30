@@ -61,8 +61,8 @@ export default function AskHarishWidget() {
       if (replyKey === 'resume') {
         setTimeout(() => {
           const a = document.createElement('a');
-          a.href = '/Harish_M_Resume.txt';
-          a.download = 'Harish_M_Resume.txt';
+          a.href = '/Harish.pdf';
+          a.download = 'Harish_M_Resume.pdf';
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);

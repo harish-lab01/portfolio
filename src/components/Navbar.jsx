@@ -58,15 +58,15 @@ export default function Navbar() {
 
         {/* Desktop CTA + Mobile hamburger */}
         <div className="flex items-center gap-3">
-          <MagneticButton
-            as="a"
-            href="#contact"
-            className="hidden sm:inline-flex px-5 py-2 rounded-full font-code text-xs uppercase tracking-wider bg-text-primary text-bg-ivory border border-text-primary hover:bg-transparent hover:text-text-primary transition-all duration-300 shadow-md shadow-purple-500/5"
-          >
-            Say Hello ✦
-          </MagneticButton>
-
-          {/* Hamburger — mobile only */}
+          <div className="hidden md:block">
+            <MagneticButton
+              as="a"
+              href="#contact"
+              className="px-5 py-2 rounded-full font-code text-xs uppercase tracking-wider bg-text-primary text-bg-ivory border border-text-primary hover:bg-transparent hover:text-text-primary transition-all duration-300 shadow-md shadow-purple-500/5"
+            >
+              Say Hello ✦
+            </MagneticButton>
+          </div>
           <button
             onClick={() => setMenuOpen(p => !p)}
             className="md:hidden flex flex-col justify-center items-center w-9 h-9 gap-1.5 rounded-xl border border-border-glow bg-white/40 backdrop-blur-md"

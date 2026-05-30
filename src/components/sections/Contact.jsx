@@ -95,8 +95,8 @@ export default function Contact() {
 
             {/* Resume download */}
             <a
-              href="/Harish_M_Resume.pdf"
-              download
+              href="/Harish.pdf"
+              download="Harish_M_Resume.pdf"
               className="inline-flex items-center gap-2 self-start px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary-glow-from to-primary-glow-to text-white text-sm font-code font-bold tracking-wide shadow-md hover:shadow-purple-500/30 hover:scale-[1.03] active:scale-[0.98] transition-all duration-200"
             >
               <FiDownload size={14} />

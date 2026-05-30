@@ -58,19 +58,20 @@ export default function Hero() {
       id="hero"
       className="relative min-h-screen w-full flex flex-col justify-center items-center overflow-hidden bg-bg-ivory pt-20"
     >
-      {/* Background Code Scroller (Feature 4) */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0 opacity-[0.04] flex flex-col justify-around text-left">
-        <div className="flex flex-col gap-6 font-code text-[11px] text-[#6C63FF] leading-relaxed translate-x-12 rotate-[-5deg] scale-110">
-          {CODE_SNIPPETS.map((line, idx) => (
+      {/* Background Code Scroller — reduced lines for perf */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0 opacity-[0.04]">
+        <div className="flex flex-col gap-8 font-code text-[11px] text-[#6C63FF] leading-relaxed translate-x-12 rotate-[-5deg] scale-110 will-change-transform">
+          {CODE_SNIPPETS.slice(0, 8).map((line, idx) => (
             <div
               key={idx}
               className="whitespace-nowrap"
               style={{
-                animation: `marquee ${30 + idx * 5}s linear infinite`,
-                animationDelay: `-${idx * 2}s`
+                animation: `marquee ${35 + idx * 4}s linear infinite`,
+                animationDelay: `-${idx * 3}s`,
+                willChange: 'transform',
               }}
             >
-              {line} &nbsp;&nbsp;&nbsp;&nbsp; {line} &nbsp;&nbsp;&nbsp;&nbsp; {line}
+              {line} &nbsp;&nbsp;&nbsp;&nbsp; {line}
             </div>
           ))}
         </div>
@@ -82,7 +83,7 @@ export default function Hero() {
       <AuroraBlob color="teal" size="w-[400px] h-[400px]" className="left-[40%] top-[30%]" opacity="opacity-10" animationIndex={3} />
 
       {/* Split Layout Container */}
-      <div className="w-full max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-6 z-10 flex-1 items-center py-12">
+      <div className="w-full max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 z-10 flex-1 items-center py-12">
         
         {/* Left Half (Text Content) - 7 cols */}
         <div className="lg:col-span-7 flex flex-col justify-center text-left">
@@ -92,7 +93,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="self-start mb-6"
+            className="self-start mb-5"
           >
             <div className="glass px-4 py-1.5 rounded-full flex items-center gap-2 border border-border-glow bg-white/40">
               <span className="relative flex h-2 w-2">
@@ -116,12 +117,12 @@ export default function Hero() {
             That <span className="font-display italic font-semibold bg-gradient-to-r from-primary-glow-from to-[#FF6B9D] bg-clip-text text-transparent">Works</span>
           </motion.h1>
 
-          {/* Subheading (Staggered Fade-in) */}
+          {/* Subheading */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="text-xs font-code font-semibold tracking-wider text-primary-glow-from uppercase mb-6 flex flex-wrap gap-x-2 gap-y-1"
+            className="text-xs font-code font-semibold tracking-wider text-primary-glow-from uppercase mb-5 flex flex-wrap gap-x-2 gap-y-1"
           >
             {words.map((word, i) => (
               <motion.span key={i} variants={wordVariants}>
@@ -135,7 +136,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.35 }}
-            className="text-base text-text-muted max-w-xl mb-10 leading-relaxed font-body"
+            className="text-sm sm:text-base text-text-muted max-w-xl mb-8 leading-relaxed font-body"
           >
             Hey! I'm a Software Developer based in Chennai who builds complete web applications — clean React frontends, robust .NET APIs, and everything in between. I care about code that's fast, scalable, and genuinely great to use.
           </motion.p>
@@ -145,21 +146,21 @@ export default function Hero() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.45 }}
-            className="flex flex-wrap gap-4 mb-10"
+            className="flex flex-wrap gap-3 mb-8"
           >
             <MagneticButton
               as="a"
               href="#projects"
-              className="px-8 py-4 rounded-full font-code text-xs uppercase tracking-wider bg-gradient-to-r from-primary-glow-from to-[#A78BFA] text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all shadow-md"
+              className="px-6 py-3 rounded-full font-code text-xs uppercase tracking-wider bg-gradient-to-r from-primary-glow-from to-[#A78BFA] text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all shadow-md"
             >
               See My Builds ↓
             </MagneticButton>
 
             <MagneticButton
               as="a"
-              href="/Harish_M_Resume.txt"
-              download="Harish_M_Resume.txt"
-              className="px-8 py-4 rounded-full font-code text-xs uppercase tracking-wider border border-border-glow text-text-primary bg-white/20 hover:bg-gradient-to-r hover:from-primary-glow-from hover:to-primary-glow-to hover:text-white hover:border-transparent transition-all"
+              href="/Harish.pdf"
+              download="Harish_M_Resume.pdf"
+              className="px-6 py-3 rounded-full font-code text-xs uppercase tracking-wider border border-border-glow text-text-primary bg-white/20 hover:bg-gradient-to-r hover:from-primary-glow-from hover:to-primary-glow-to hover:text-white hover:border-transparent transition-all"
             >
               Grab My Resume ↑
             </MagneticButton>
@@ -172,37 +173,24 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.55 }}
             className="flex items-center gap-6"
           >
-            <a
-              href={personal.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-text-muted hover:text-[#0D0d0d] transition-colors"
-              aria-label="LinkedIn Profile"
-            >
+            <a href={personal.linkedin} target="_blank" rel="noopener noreferrer"
+              className="text-text-muted hover:text-[#0D0d0d] transition-colors" aria-label="LinkedIn Profile">
               <FaLinkedin size={20} />
             </a>
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-text-muted hover:text-[#0D0d0d] transition-colors"
-              aria-label="GitHub Profile"
-            >
+            <a href="https://github.com/harish-lab01" target="_blank" rel="noopener noreferrer"
+              className="text-text-muted hover:text-[#0D0d0d] transition-colors" aria-label="GitHub Profile">
               <FaGithub size={20} />
             </a>
-            <a
-              href={`mailto:${personal.email}`}
-              className="text-text-muted hover:text-[#0D0d0d] transition-colors"
-              aria-label="Send Email"
-            >
+            <a href={`mailto:${personal.email}`}
+              className="text-text-muted hover:text-[#0D0d0d] transition-colors" aria-label="Send Email">
               <FaEnvelope size={20} />
             </a>
           </motion.div>
 
         </div>
 
-        {/* Right Half — Hero Photo */}
-        <div className="lg:col-span-5 flex items-center justify-center relative min-h-[320px] sm:min-h-[460px] lg:min-h-[540px]">
+        {/* Right Half — Hero Photo — hidden on mobile */}
+        <div className="hidden lg:flex lg:col-span-5 items-center justify-center relative min-h-[460px] lg:min-h-[540px]">
 
           {/* Ambient glow — soft, diffused, sits under the photo */}
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[280px] h-[180px] rounded-full bg-gradient-to-t from-primary-glow-from/20 via-[#FF6B9D]/10 to-transparent blur-3xl pointer-events-none" />

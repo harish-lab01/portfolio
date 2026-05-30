@@ -17,6 +17,7 @@ import { projects } from './data/portfolioData';
 
 const SECTION_IDS = ['hero', 'about', 'journey', 'projects', 'skills', 'contact'];
 const SECTION_LABELS = ['Home', 'About', 'Journey', 'Projects', 'Skills', 'Contact'];
+const SECTION_COLORS = ['#6C63FF', '#A78BFA', '#45E5C8', '#FFB347', '#45E5C8', '#6C63FF'];
 
 // ─── Konami Code Matrix Rain Easter Egg ──────────────────────────────────────
 function MatrixEasterEgg({ onClose }) {
@@ -166,7 +167,6 @@ export default function App() {
   }, [isLoading]);
 
   // Accent colour per section for cursor
-  const SECTION_COLORS = ['#6C63FF', '#A78BFA', '#45E5C8', '#FFB347', '#45E5C8', '#6C63FF'];
   const activeCursorColor = activeSection === 3 ? activeProjectColor : (SECTION_COLORS[activeSection] || '#6C63FF');
 
   return (

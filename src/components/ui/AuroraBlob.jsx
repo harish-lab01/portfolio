@@ -17,6 +17,7 @@ export default function AuroraBlob({ color, size = 'w-96 h-96', className = '', 
         absolute rounded-full filter blur-[120px] pointer-events-none select-none -z-10
         ${colorClass} ${size} ${opacity} ${animClass} ${className}
       `}
+      style={{ transform: 'translateZ(0)' }}
     />
   );
 }

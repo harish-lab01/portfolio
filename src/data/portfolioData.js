@@ -93,12 +93,11 @@ export const projects = [
   },
   {
     id: "05",
-    title: "E-Commerce Platforms",
-    category: "Personal & Professional Projects · React + .NET",
-    description: "I engineered two high-volume e-commerce applications. I built interactive catalogs, bulk-ordering flows, real-time inventory dashboards, and seamless .NET API endpoints.",
+    title: "Sri Gokilaa Crackers",
+    category: "E-Commerce Platform · React.js + .NET",
+    description: "Developed and styled a responsive React.js UI for this e-commerce platform, consuming .NET backend APIs for product data, cart management, and order workflows. Built product catalogs, cart workflows, bulk ordering, and admin dashboards for inventory management. Optimised UI components for responsive layouts and smooth cross-browser performance.",
     links: [
-      { label: "harisilks.com", url: "http://harisilks.com" },
-      { label: "adhityacrackers.com", url: "https://adhityacrackers.com" },
+      { label: "srigokilaacrackers.com", url: "https://srigokilaacrackers.com" },
     ],
     tags: ["React.js", ".NET API", "Tailwind CSS", "Axios"],
     highlight: "Safely managed hundreds of live production orders",

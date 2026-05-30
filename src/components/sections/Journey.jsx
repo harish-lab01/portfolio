@@ -115,6 +115,29 @@ function JourneyCard({ item, index }) {
   );
 }
 
+// ── Progress dots (hooks-safe, no map) ──────────────────────────────────────
+function ProgressDot({ scrollYProgress, index, total }) {
+  const start = index / (total + 1);
+  const end = (index + 1) / (total + 1);
+  const opacity = useTransform(scrollYProgress, [start, end], [0.3, 1]);
+  return (
+    <motion.div
+      className="rounded-full"
+      style={{ width: 8, height: 8, background: '#6C63FF', opacity }}
+    />
+  );
+}
+
+function ProgressDots({ scrollYProgress, count }) {
+  return (
+    <>
+      {Array.from({ length: count }).map((_, i) => (
+        <ProgressDot key={i} scrollYProgress={scrollYProgress} index={i} total={count} />
+      ))}
+    </>
+  );
+}
+
 // ── Main section ─────────────────────────────────────────────────────────────
 export default function Journey() {
   const sectionRef = useRef(null);
@@ -235,15 +258,7 @@ export default function Journey() {
         </motion.div>
 
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
-          {experience.map((_, i) => {
-            const start = i / (experience.length + 1);
-            const end = (i + 1) / (experience.length + 1);
-            return (
-              <motion.div key={i} className="rounded-full transition-all duration-300"
-                style={{ width: 8, height: 8, background: '#6C63FF',
-                  opacity: useTransform(scrollYProgress, [start, end], [0.3, 1]) }} />
-            );
-          })}
+          <ProgressDots scrollYProgress={scrollYProgress} count={experience.length} />
         </div>
       </div>
     </section>
