@@ -1,24 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
 import GlassCard from '../ui/GlassCard';
 import useTextScramble from '../../hooks/useTextScramble';
 import { personal } from '../../data/portfolioData';
-import { FiMail, FiPhone, FiLinkedin, FiDownload, FiSend } from 'react-icons/fi';
+import { FiMail, FiPhone, FiLinkedin, FiDownload, FiSend, FiCopy, FiExternalLink } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 
-export default function Contact() {
+export default function Contact({ addToast }) {
   const scramble = useTextScramble("Let's Connect", 600, true);
-  const [copied, setCopied] = useState(null);
 
   const handleCardClick = (item) => {
-    // LinkedIn and WhatsApp open directly in new tab
-    if (item.external || item.key === 'whatsapp') {
+    // LinkedIn and WhatsApp — open directly
+    if (item.external) {
       window.open(item.href, '_blank', 'noopener,noreferrer');
       return;
     }
-    // Email and Phone copy to clipboard
+
+    // Email and Phone — copy to clipboard + toast
     navigator.clipboard.writeText(item.value).then(() => {
-      setCopied(item.key);
-      setTimeout(() => setCopied(null), 2000);
+      addToast({
+        message: `${item.label} copied to clipboard!`,
+        type: 'success',
+        emoji: item.key === 'email' ? '📋' : '📞',
+        duration: 3000,
+      });
+    }).catch(() => {
+      addToast({
+        message: 'Could not copy — try manually.',
+        type: 'error',
+        duration: 3000,
+      });
     });
   };
 
@@ -30,6 +40,7 @@ export default function Contact() {
       value: personal.email,
       href: `mailto:${personal.email}`,
       color: '#6C63FF',
+      hint: 'Click to copy',
     },
     {
       key: 'phone',
@@ -38,6 +49,7 @@ export default function Contact() {
       value: personal.phone,
       href: `tel:${personal.phone}`,
       color: '#45E5C8',
+      hint: 'Click to copy',
     },
     {
       key: 'whatsapp',
@@ -47,7 +59,7 @@ export default function Contact() {
       href: 'https://wa.me/919361070003',
       color: '#25D366',
       external: true,
-      actionLabel: 'Open',
+      hint: 'Opens WhatsApp',
     },
     {
       key: 'linkedin',
@@ -57,7 +69,7 @@ export default function Contact() {
       href: personal.linkedin,
       color: '#0A66C2',
       external: true,
-      actionLabel: 'Open',
+      hint: 'Opens LinkedIn',
     },
   ];
 
@@ -126,6 +138,8 @@ export default function Contact() {
           <div className="flex flex-col gap-4">
             {contactItems.map((item) => {
               const Icon = item.icon;
+              const ActionIcon = item.external ? FiExternalLink : FiCopy;
+
               return (
                 <GlassCard
                   key={item.key}
@@ -134,52 +148,38 @@ export default function Contact() {
                   onClick={() => handleCardClick(item)}
                 >
                   <div className="flex items-center gap-4">
+                    {/* Icon bubble */}
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:scale-110"
                       style={{ background: `${item.color}18`, border: `1px solid ${item.color}33` }}
                     >
                       <Icon size={16} style={{ color: item.color }} />
                     </div>
+
+                    {/* Label + value */}
                     <div>
-                      <p className="text-[10px] font-code font-bold tracking-widest text-text-muted uppercase mb-0.5">
+                      <p className="text-[10px] font-code font-bold tracking-widest text-text-muted uppercase mb-0.5 flex items-center gap-1.5">
                         {item.label}
+                        <span className="opacity-0 group-hover:opacity-60 transition-opacity text-[9px] normal-case tracking-normal font-normal">
+                          · {item.hint}
+                        </span>
                       </p>
-                      <p className="text-sm font-code text-text-primary font-medium truncate max-w-[180px] sm:max-w-none">{item.value}</p>
+                      <p className="text-sm font-code text-text-primary font-medium truncate max-w-[180px] sm:max-w-none">
+                        {item.value}
+                      </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 shrink-0">
-                    {/* Copy feedback */}
-                    <span
-                      className={`text-[10px] font-code transition-opacity duration-200 ${
-                        copied === item.key ? 'opacity-100 text-emerald-500' : 'opacity-0'
-                      }`}
-                    >
-                      Copied!
-                    </span>
-
-                    {/* Action button */}
-                    {item.external ? (
-                      <a
-                        href={item.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="w-8 h-8 rounded-lg flex items-center justify-center border border-border-glow/50 text-text-muted hover:text-text-primary hover:border-border-glow transition-all"
-                        aria-label={`Open ${item.label}`}
-                        style={{ '--hover-color': item.color }}
-                      >
-                        <FiSend size={12} />
-                      </a>
-                    ) : (
-                      <button
-                        onClick={(e) => { e.stopPropagation(); handleCardClick(item); }}
-                        className="w-8 h-8 rounded-lg flex items-center justify-center border border-border-glow/50 text-text-muted hover:text-text-primary hover:border-border-glow transition-all"
-                        aria-label={`Copy ${item.label}`}
-                      >
-                        <FiSend size={12} />
-                      </button>
-                    )}
+                  {/* Action icon */}
+                  <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center border border-border-glow/50 text-text-muted group-hover:border-opacity-100 transition-all shrink-0"
+                    style={{ '--tw-border-opacity': 1 }}
+                  >
+                    <ActionIcon
+                      size={12}
+                      style={{ color: item.color }}
+                      className="opacity-40 group-hover:opacity-100 transition-opacity"
+                    />
                   </div>
                 </GlassCard>
               );

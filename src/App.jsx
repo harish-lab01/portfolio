@@ -12,7 +12,9 @@ import Skills from './components/sections/Skills';
 import Contact from './components/sections/Contact';
 import useScrollProgress from './hooks/useScrollProgress';
 import useKonamiCode from './hooks/useKonamiCode';
-import { projects } from './data/portfolioData';
+import useTabTitle from './hooks/useTabTitle';
+import { ToastContainer, useToast } from './components/ui/Toast';
+import { projects, personal } from './data/portfolioData';
 
 
 const SECTION_IDS = ['hero', 'about', 'journey', 'projects', 'skills', 'contact'];
@@ -123,6 +125,8 @@ export default function App() {
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   const [activeProjectColor, setActiveProjectColor] = useState('#6C63FF');
   const { activeSection } = useScrollProgress(SECTION_IDS);
+  const { toasts, addToast, removeToast } = useToast();
+  useTabTitle();
 
   // Konami Code triggers easter egg
   const handleKonami = useCallback(() => {
@@ -210,8 +214,11 @@ export default function App() {
         <Projects />
 
         <Skills />
-        <Contact />
+        <Contact addToast={addToast} />
       </main>
+
+      {/* Toast notifications */}
+      <ToastContainer toasts={toasts} onRemove={removeToast} />
     </>
   );
 }

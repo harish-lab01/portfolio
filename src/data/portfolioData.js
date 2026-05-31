@@ -9,6 +9,7 @@ export const personal = {
   linkedin: "https://linkedin.com/in/harish43",
   location: "Chennai, TN, India",
   available: true,
+  openToWork: true,   // ← set false to hide the banner
 };
 
 export const stats = [
