@@ -3,14 +3,21 @@ import GlassCard from '../ui/GlassCard';
 import useTextScramble from '../../hooks/useTextScramble';
 import { personal } from '../../data/portfolioData';
 import { FiMail, FiPhone, FiLinkedin, FiDownload, FiSend } from 'react-icons/fi';
+import { FaWhatsapp } from 'react-icons/fa';
 
 export default function Contact() {
   const scramble = useTextScramble("Let's Connect", 600, true);
   const [copied, setCopied] = useState(null);
 
-  const handleCopy = (value, key) => {
-    navigator.clipboard.writeText(value).then(() => {
-      setCopied(key);
+  const handleCardClick = (item) => {
+    // LinkedIn and WhatsApp open directly in new tab
+    if (item.external || item.key === 'whatsapp') {
+      window.open(item.href, '_blank', 'noopener,noreferrer');
+      return;
+    }
+    // Email and Phone copy to clipboard
+    navigator.clipboard.writeText(item.value).then(() => {
+      setCopied(item.key);
       setTimeout(() => setCopied(null), 2000);
     });
   };
@@ -33,13 +40,24 @@ export default function Contact() {
       color: '#45E5C8',
     },
     {
+      key: 'whatsapp',
+      icon: FaWhatsapp,
+      label: 'WhatsApp',
+      value: 'Chat on WhatsApp',
+      href: 'https://wa.me/919361070003',
+      color: '#25D366',
+      external: true,
+      actionLabel: 'Open',
+    },
+    {
       key: 'linkedin',
       icon: FiLinkedin,
       label: 'LinkedIn',
       value: 'linkedin.com/in/harish43',
       href: personal.linkedin,
-      color: '#FF6B9D',
+      color: '#0A66C2',
       external: true,
+      actionLabel: 'Open',
     },
   ];
 
@@ -113,7 +131,7 @@ export default function Contact() {
                   key={item.key}
                   className="flex items-center justify-between gap-4 p-5 group hover:shadow-lg transition-all duration-300 cursor-pointer"
                   hoverGlow
-                  onClick={() => handleCopy(item.value, item.key)}
+                  onClick={() => handleCardClick(item)}
                 >
                   <div className="flex items-center gap-4">
                     <div
@@ -140,17 +158,28 @@ export default function Contact() {
                       Copied!
                     </span>
 
-                    {/* Open link */}
-                    <a
-                      href={item.href}
-                      target={item.external ? '_blank' : undefined}
-                      rel={item.external ? 'noopener noreferrer' : undefined}
-                      onClick={(e) => e.stopPropagation()}
-                      className="w-8 h-8 rounded-lg flex items-center justify-center border border-border-glow/50 text-text-muted hover:text-text-primary hover:border-border-glow transition-all"
-                      aria-label={`Open ${item.label}`}
-                    >
-                      <FiSend size={12} />
-                    </a>
+                    {/* Action button */}
+                    {item.external ? (
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="w-8 h-8 rounded-lg flex items-center justify-center border border-border-glow/50 text-text-muted hover:text-text-primary hover:border-border-glow transition-all"
+                        aria-label={`Open ${item.label}`}
+                        style={{ '--hover-color': item.color }}
+                      >
+                        <FiSend size={12} />
+                      </a>
+                    ) : (
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleCardClick(item); }}
+                        className="w-8 h-8 rounded-lg flex items-center justify-center border border-border-glow/50 text-text-muted hover:text-text-primary hover:border-border-glow transition-all"
+                        aria-label={`Copy ${item.label}`}
+                      >
+                        <FiSend size={12} />
+                      </button>
+                    )}
                   </div>
                 </GlassCard>
               );

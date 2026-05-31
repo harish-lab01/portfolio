@@ -64,7 +64,7 @@ export default function Navbar() {
               href="#contact"
               className="px-5 py-2 rounded-full font-code text-xs uppercase tracking-wider bg-text-primary text-bg-ivory border border-text-primary hover:bg-transparent hover:text-text-primary transition-all duration-300 shadow-md shadow-purple-500/5"
             >
-              Say Hello ✦
+              Hire Me ✦
             </MagneticButton>
           </div>
           <button
@@ -110,7 +110,7 @@ export default function Navbar() {
             onClick={() => setMenuOpen(false)}
             className="mt-2 text-sm font-code tracking-wider uppercase text-white bg-gradient-to-r from-primary-glow-from to-primary-glow-to px-3 py-2.5 rounded-xl text-center"
           >
-            Say Hello ✦
+            Hire Me ✦
           </a>
         </nav>
       </div>
