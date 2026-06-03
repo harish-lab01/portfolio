@@ -104,6 +104,20 @@ export const projects = [
     highlight: "Safely managed hundreds of live production orders",
     accentColor: "#6C63FF",
   },
+  {
+    id: "06",
+    title: "ShopMind AI",
+    category: "AI E-Commerce · React + Gemini 2.0",
+    description: "A React e-commerce application with a premium dark-luxury editorial aesthetic. Users shop entirely through natural language — 'Add the watch to my cart' or 'Show me jackets under $500'. The AI executes real actions: adds to cart, saves to wishlist, and navigates pages. Built with multi-turn conversation memory, voice input via Web Speech API, and product cards rendered inside chat bubbles.",
+    links: [
+      { label: "Live Demo", url: "https://ai-shop-zeta.vercel.app" },
+    ],
+    tags: ["React.js", "Gemini 2.0 Flash", "Web Speech API", "Tailwind CSS", "Framer Motion"],
+    highlight: "Shop entirely through natural language — AI executes real cart & navigation actions",
+    accentColor: "#6C63FF",
+    badge: "🤖 AI-Powered",
+    dark: true,
+  },
 ];
 
 export const skills = {

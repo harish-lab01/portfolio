@@ -112,6 +112,38 @@ export default function BrowserMockup({ url, type = 'dashboard', className = '' 
             </div>
           </div>
         )}
+
+        {type === 'aiShop' && (
+          <div className="flex-1 flex flex-col gap-2 animate-[float_6s_ease-in-out_infinite]" style={{ background: '#0d0d12' }}>
+            {/* Dark header bar */}
+            <div className="flex items-center justify-between px-2 py-1 rounded" style={{ background: '#1a1a24' }}>
+              <div className="w-14 h-2.5 rounded" style={{ background: '#6C63FF44' }} />
+              <div className="flex gap-1">
+                <div className="w-5 h-2 rounded-full" style={{ background: '#6C63FF55' }} />
+                <div className="w-5 h-2 rounded-full" style={{ background: '#FF6B9D44' }} />
+              </div>
+            </div>
+            {/* Product grid row */}
+            <div className="grid grid-cols-3 gap-1.5">
+              {['#6C63FF', '#FF6B9D', '#45E5C8'].map((c, i) => (
+                <div key={i} className="rounded p-1.5 flex flex-col gap-1" style={{ background: '#1a1a24', border: `1px solid ${c}33` }}>
+                  <div className="w-full aspect-square rounded" style={{ background: `linear-gradient(135deg, ${c}22, ${c}44)` }} />
+                  <div className="w-8 h-1.5 rounded" style={{ background: '#ffffff22' }} />
+                  <div className="w-5 h-2 rounded" style={{ background: `${c}66` }} />
+                </div>
+              ))}
+            </div>
+            {/* AI chat bubble */}
+            <div className="flex flex-col gap-1 mt-auto">
+              <div className="self-end px-2 py-1 rounded-xl rounded-tr-none text-[8px] font-code" style={{ background: '#6C63FF', color: '#fff', maxWidth: '80%' }}>
+                Show jackets under $500
+              </div>
+              <div className="self-start px-2 py-1 rounded-xl rounded-tl-none text-[8px] font-code" style={{ background: '#1a1a24', color: '#ffffff99', border: '1px solid #6C63FF33', maxWidth: '80%' }}>
+                ✦ Found 3 jackets for you!
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

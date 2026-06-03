@@ -14,10 +14,11 @@ const FALLBACK_REPLIES = {
 
 function getFallbackReply(text) {
   const t = text.toLowerCase();
+  // Check experience first — "work experience", "history", "company" should not bleed into "available"
+  if (t.includes('experience') || t.includes('history') || t.includes('company') || t.includes('work exp') || t.includes('vivify')) return FALLBACK_REPLIES.experience;
   if (t.includes('avail') || t.includes('hire') || t.includes('job') || t.includes('work') || t.includes('opportunit')) return FALLBACK_REPLIES.available;
   if (t.includes('project') || t.includes('portfolio') || t.includes('build') || t.includes('app')) return FALLBACK_REPLIES.projects;
   if (t.includes('tech') || t.includes('stack') || t.includes('skill') || t.includes('language') || t.includes('react') || t.includes('framework')) return FALLBACK_REPLIES.tech;
-  if (t.includes('exp') || t.includes('history') || t.includes('company') || t.includes('work')) return FALLBACK_REPLIES.experience;
   if (t.includes('resume') || t.includes('cv') || t.includes('download')) return FALLBACK_REPLIES.resume;
   return FALLBACK_REPLIES.default;
 }

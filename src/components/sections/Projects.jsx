@@ -5,7 +5,7 @@ import { FiExternalLink, FiCode, FiStar } from 'react-icons/fi';
 import AuroraBlob from '../ui/AuroraBlob';
 import BrowserMockup from '../ui/BrowserMockup';
 
-const MOCKUP_TYPE = { '01': 'dashboard', '02': 'safety', '03': 'chat', '05': 'ecommerce' };
+const MOCKUP_TYPE = { '01': 'dashboard', '02': 'safety', '03': 'chat', '05': 'ecommerce', '06': 'aiShop' };
 
 // ── Terminal mockup for JARVIS ───────────────────────────────────────────────
 function TerminalMockup() {

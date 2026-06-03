@@ -72,6 +72,15 @@ PROJECTS:
    - Safely managed hundreds of live production orders
    - Live: srigokilaacrackers.com
 
+6. ShopMind AI (AI E-Commerce · React + Gemini 2.0 Flash)
+   - Full-stack-ready React e-commerce app with dark-luxury editorial aesthetic
+   - Users shop entirely through natural language: "Add the watch to my cart", "Show me jackets under $500"
+   - AI executes real actions: adds to cart, saves to wishlist, navigates pages
+   - Multi-turn conversation memory, voice input via Web Speech API
+   - Product cards rendered inside chat bubbles with instant add-to-cart
+   - Smart local fallback with 15+ intent handlers — works without API key
+   - Live Demo: https://ai-shop-zeta.vercel.app
+
 STATS: 4+ React Apps Shipped · 1+ Year Professional Experience · 3+ Role Auth Modules
 
 RESUME: Available for download at /Harish_M_Resume.pdf
