@@ -1,11 +1,11 @@
-import React, { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import React, { useRef, useState, useEffect } from 'react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { projects } from '../../data/portfolioData';
-import { FiExternalLink, FiCode, FiStar } from 'react-icons/fi';
+import { FiExternalLink, FiCode, FiStar, FiX, FiZap, FiLayers } from 'react-icons/fi';
 import AuroraBlob from '../ui/AuroraBlob';
 import BrowserMockup from '../ui/BrowserMockup';
 
-const MOCKUP_TYPE = { '01': 'dashboard', '02': 'safety', '03': 'chat', '05': 'ecommerce', '06': 'aiShop' };
+const MOCKUP_TYPE = { '00': 'secondBrain', '01': 'dashboard', '02': 'safety', '03': 'chat', '05': 'ecommerce', '06': 'aiShop' };
 
 // ── Terminal mockup for JARVIS ───────────────────────────────────────────────
 function TerminalMockup() {
@@ -29,8 +29,194 @@ function TerminalMockup() {
   );
 }
 
+// ── Project Detail Popup ─────────────────────────────────────────────────────
+const AI_SECOND_BRAIN_DETAILS = {
+  tagline: "Turn passive saving into an active, conversational knowledge base.",
+  techStack: [
+    { layer: "Frontend", tech: "React 18 + Vite" },
+    { layer: "Styling", tech: "Tailwind CSS — dark glassmorphism" },
+    { layer: "State", tech: "Zustand — real-time global store" },
+    { layer: "Auth", tech: "Firebase Authentication (Google Sign-In)" },
+    { layer: "Database", tech: "Firestore — real-time NoSQL" },
+    { layer: "AI Chat", tech: "Groq API — llama-3.3-70b-versatile" },
+    { layer: "Semantic Search", tech: "Hugging Face — sentence-transformers/all-MiniLM-L6-v2" },
+    { layer: "Graph Viz", tech: "react-force-graph-2d — WebGL force-directed" },
+    { layer: "PWA", tech: "vite-plugin-pwa + Workbox — installable, offline-capable" },
+    { layer: "Deployment", tech: "Vercel" },
+  ],
+  features: [
+    { icon: "📄", title: "Multi-format Note Capture", desc: "Save text notes, extract text from PDFs locally (zero uploads), or paste a URL for auto-fetched article content." },
+    { icon: "🤖", title: "AI Analysis on Every Save", desc: "Groq AI auto-generates a 2–3 sentence summary, up to 5 tags, and finds related notes — before you even close the modal." },
+    { icon: "🔍", title: "Semantic Vector Search", desc: "Hybrid search: 40% keyword + 60% vector similarity. Searching 'focus' surfaces notes on 'deep work' and 'flow state'." },
+    { icon: "💬", title: "AI Chat with Your Knowledge", desc: "Full chat interface that retrieves semantically relevant notes as context before calling the LLM. Chat history persists to Firestore." },
+    { icon: "🕸️", title: "Knowledge Graph Visualisation", desc: "Interactive WebGL force-directed graph. Every note is a node, AI-detected relationships are edges. Click any node to open the note." },
+    { icon: "🔁", title: "Spaced Repetition (SM-2)", desc: "Anki-style review scheduling. AI generates a flashcard question. Rate recall (Forgot/Hard/Good/Easy) to set the next review date." },
+    { icon: "📁", title: "Collections / Notebooks", desc: "Group notes into named collections with custom colors and emoji icons. Move notes between collections from the detail page." },
+    { icon: "🎙️", title: "Voice Input", desc: "Web Speech API integration — dictate notes or chat messages with real-time transcript display before submitting." },
+    { icon: "📑", title: "Note Templates", desc: "6 built-in templates (Book Summary, Meeting Notes, Research, Daily Journal, Learning Note, Project Plan) that pre-fill structured content." },
+    { icon: "📥", title: "Import from Notion / Obsidian", desc: "Drag and drop .md files — YAML front matter stripped, titles extracted, each file becomes a note with full AI analysis." },
+    { icon: "🌐", title: "Public Note Sharing", desc: "One-click publish any note to a public URL. Accessible without login, branded with a CTA. Link auto-copied to clipboard." },
+    { icon: "📱", title: "PWA — Installable App", desc: "Workbox service worker caches app shell, fonts, and Firestore reads. Installable on mobile and desktop. Works offline." },
+  ],
+  numbers: [
+    { val: "44", label: "Source Files" },
+    { val: "12", label: "Major Features" },
+    { val: "5", label: "Firestore Collections" },
+    { val: "2", label: "AI APIs" },
+    { val: "0", label: "Lint Errors" },
+  ],
+};
+
+function ProjectDetailModal({ proj, onClose }) {
+  // Close on Escape key
+  useEffect(() => {
+    const handler = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [onClose]);
+
+  // Lock body scroll
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; };
+  }, []);
+
+  const details = AI_SECOND_BRAIN_DETAILS;
+
+  return (
+    <motion.div
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/75 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
+      {/* Modal */}
+      <motion.div
+        className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl"
+        style={{
+          background: 'linear-gradient(135deg, #0d0d18 0%, #12101f 100%)',
+          border: `1px solid ${proj.accentColor}30`,
+          boxShadow: `0 32px 100px ${proj.accentColor}25`,
+        }}
+        initial={{ scale: 0.92, y: 24 }}
+        animate={{ scale: 1, y: 0 }}
+        exit={{ scale: 0.92, y: 24 }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {/* Header */}
+        <div
+          className="sticky top-0 z-10 flex items-start justify-between px-6 py-5"
+          style={{ background: 'linear-gradient(135deg, #0d0d18 0%, #12101f 100%)', borderBottom: `1px solid ${proj.accentColor}20` }}
+        >
+          <div className="flex flex-col gap-1.5">
+            <div className="flex items-center gap-2">
+              <span
+                className="text-[9px] font-code font-bold tracking-[0.2em] uppercase px-2.5 py-1 rounded-lg animate-pulse"
+                style={{ color: '#fff', background: `linear-gradient(90deg, ${proj.accentColor}, ${proj.accentColor}bb)` }}
+              >
+                ✦ Latest Project
+              </span>
+              <span
+                className="text-[9px] font-code font-bold px-2.5 py-1 rounded-lg"
+                style={{ color: proj.accentColor, background: `${proj.accentColor}18`, border: `1px solid ${proj.accentColor}35` }}
+              >
+                {proj.badge}
+              </span>
+            </div>
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-white leading-tight">{proj.title}</h2>
+            <p className="text-sm font-body" style={{ color: `${proj.accentColor}cc` }}>{details.tagline}</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="shrink-0 ml-4 p-2 rounded-xl transition-all hover:scale-110"
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}
+          >
+            <FiX size={18} />
+          </button>
+        </div>
+
+        <div className="px-6 py-6 flex flex-col gap-8">
+
+          {/* Numbers */}
+          <div className="grid grid-cols-5 gap-2">
+            {details.numbers.map(({ val, label }) => (
+              <div key={label} className="flex flex-col items-center gap-1 py-3 rounded-2xl" style={{ background: `${proj.accentColor}0d`, border: `1px solid ${proj.accentColor}20` }}>
+                <span className="font-accent text-xl font-bold" style={{ color: proj.accentColor }}>{val}</span>
+                <span className="text-[9px] font-code text-center leading-tight" style={{ color: 'rgba(255,255,255,0.4)' }}>{label}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Tech Stack */}
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <FiLayers size={14} style={{ color: proj.accentColor }} />
+              <span className="text-xs font-code font-bold tracking-widest uppercase" style={{ color: proj.accentColor }}>Tech Stack</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {details.techStack.map(({ layer, tech }) => (
+                <div key={layer} className="flex items-start gap-3 px-3 py-2.5 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <span className="text-[9px] font-code shrink-0 mt-0.5 px-1.5 py-0.5 rounded" style={{ color: proj.accentColor, background: `${proj.accentColor}20` }}>{layer}</span>
+                  <span className="text-xs font-code text-white/60 leading-snug">{tech}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Features */}
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <FiZap size={14} style={{ color: proj.accentColor }} />
+              <span className="text-xs font-code font-bold tracking-widest uppercase" style={{ color: proj.accentColor }}>Core Features</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              {details.features.map(({ icon, title, desc }) => (
+                <div key={title} className="flex items-start gap-3 px-3.5 py-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${proj.accentColor}15` }}>
+                  <span className="text-base shrink-0 mt-0.5">{icon}</span>
+                  <div>
+                    <p className="text-xs font-code font-semibold text-white/80 leading-snug">{title}</p>
+                    <p className="text-[11px] font-body text-white/40 mt-0.5 leading-snug">{desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="flex flex-wrap gap-3 pt-2 pb-2">
+            <a
+              href="https://second-brain-mauve-psi.vercel.app/login"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 font-code text-sm font-semibold px-6 py-3 rounded-2xl transition-all duration-200 hover:scale-105 hover:shadow-lg"
+              style={{ background: proj.accentColor, color: '#fff', boxShadow: `0 4px 20px ${proj.accentColor}40` }}
+            >
+              <FiExternalLink size={14} />
+              Open Live Demo
+            </a>
+            <button
+              onClick={onClose}
+              className="inline-flex items-center gap-2 font-code text-sm font-semibold px-6 py-3 rounded-2xl transition-all duration-200 hover:scale-105"
+              style={{ background: 'transparent', color: proj.accentColor, border: `1.5px solid ${proj.accentColor}50` }}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 // ── Single project section ───────────────────────────────────────────────────
-function ProjectSection({ proj, index }) {
+function ProjectSection({ proj, index, onOpenDetail }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-10%' });
   const isEven = index % 2 === 0;
@@ -76,7 +262,6 @@ function ProjectSection({ proj, index }) {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-col gap-6"
           >
-            {/* Project number + category */}
             <div className="flex items-center gap-4">
               <span
                 className="font-accent text-6xl font-bold leading-none select-none"
@@ -85,6 +270,17 @@ function ProjectSection({ proj, index }) {
                 {proj.id}
               </span>
               <div className="flex flex-col gap-1">
+                {proj.isLatest && (
+                  <span
+                    className="text-[9px] font-code font-bold tracking-[0.2em] uppercase px-2.5 py-1 rounded-lg self-start animate-pulse"
+                    style={{
+                      color: '#fff',
+                      background: `linear-gradient(90deg, ${proj.accentColor}, ${proj.accentColor}bb)`,
+                    }}
+                  >
+                    ✦ Latest Project
+                  </span>
+                )}
                 <span
                   className="text-[9px] font-code font-bold tracking-[0.25em] uppercase px-2.5 py-1 rounded-lg self-start"
                   style={{
@@ -195,6 +391,20 @@ function ProjectSection({ proj, index }) {
                     {link.label}
                   </a>
                 ))}
+                {proj.isLatest && (
+                  <button
+                    onClick={() => onOpenDetail(proj)}
+                    className="inline-flex items-center gap-2 font-code text-sm font-semibold px-6 py-3 rounded-2xl transition-all duration-200 hover:scale-105"
+                    style={{
+                      background: 'transparent',
+                      color: proj.accentColor,
+                      border: `1.5px solid ${proj.accentColor}50`,
+                    }}
+                  >
+                    <FiLayers size={14} />
+                    View Details
+                  </button>
+                )}
               </div>
             ) : proj.badge && (
               <span
@@ -256,6 +466,7 @@ function ProjectSection({ proj, index }) {
 export default function Projects() {
   const headerRef = useRef(null);
   const inView = useInView(headerRef, { once: true, margin: '-80px' });
+  const [detailProj, setDetailProj] = useState(null);
 
   return (
     <div id="projects" className="w-full">
@@ -311,8 +522,15 @@ export default function Projects() {
 
       {/* ── Project sections ── */}
       {projects.map((proj, i) => (
-        <ProjectSection key={proj.id} proj={proj} index={i} />
+        <ProjectSection key={proj.id} proj={proj} index={i} onOpenDetail={setDetailProj} />
       ))}
+
+      {/* ── Detail modal ── */}
+      <AnimatePresence>
+        {detailProj && (
+          <ProjectDetailModal proj={detailProj} onClose={() => setDetailProj(null)} />
+        )}
+      </AnimatePresence>
 
     </div>
   );

@@ -113,6 +113,49 @@ export default function BrowserMockup({ url, type = 'dashboard', className = '' 
           </div>
         )}
 
+        {type === 'secondBrain' && (
+          <div className="flex-1 flex flex-col gap-2 animate-[float_6s_ease-in-out_infinite]" style={{ background: '#0d0d14' }}>
+            {/* Top bar */}
+            <div className="flex items-center justify-between px-2 py-1 rounded" style={{ background: '#13131f', border: '1px solid #A78BFA22' }}>
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-3 rounded-full" style={{ background: '#A78BFA55' }} />
+                <div className="w-14 h-2 rounded" style={{ background: '#A78BFA33' }} />
+              </div>
+              <div className="flex gap-1">
+                <div className="w-6 h-2 rounded-full" style={{ background: '#A78BFA44' }} />
+                <div className="w-6 h-2 rounded-full" style={{ background: '#ffffff11' }} />
+              </div>
+            </div>
+            {/* Note cards grid */}
+            <div className="grid grid-cols-2 gap-1.5 flex-1">
+              {[
+                { color: '#A78BFA', icon: '📄', tag: 'AI' },
+                { color: '#34D399', icon: '🔗', tag: 'Web' },
+                { color: '#F472B6', icon: '📚', tag: 'PDF' },
+                { color: '#60A5FA', icon: '📝', tag: 'Note' },
+              ].map(({ color, icon, tag }, i) => (
+                <div key={i} className="rounded p-1.5 flex flex-col gap-1" style={{ background: '#1a1a2e', border: `1px solid ${color}33` }}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[9px]">{icon}</span>
+                    <span className="text-[7px] px-1 rounded-full font-code" style={{ background: `${color}33`, color }}>{tag}</span>
+                  </div>
+                  <div className="w-full h-1.5 rounded" style={{ background: '#ffffff15' }} />
+                  <div className="w-[70%] h-1.5 rounded" style={{ background: '#ffffff0d' }} />
+                </div>
+              ))}
+            </div>
+            {/* AI chat bubble */}
+            <div className="flex flex-col gap-1">
+              <div className="self-end px-2 py-1 rounded-xl rounded-tr-none text-[8px] font-code" style={{ background: '#A78BFA', color: '#fff', maxWidth: '80%' }}>
+                What did I save about focus?
+              </div>
+              <div className="self-start px-2 py-1 rounded-xl rounded-tl-none text-[8px] font-code" style={{ background: '#1a1a2e', color: '#ffffff88', border: '1px solid #A78BFA33', maxWidth: '85%' }}>
+                ✦ Found 4 related notes on deep work…
+              </div>
+            </div>
+          </div>
+        )}
+
         {type === 'aiShop' && (
           <div className="flex-1 flex flex-col gap-2 animate-[float_6s_ease-in-out_infinite]" style={{ background: '#0d0d12' }}>
             {/* Dark header bar */}

@@ -15,6 +15,7 @@ import useKonamiCode from './hooks/useKonamiCode';
 import useTabTitle from './hooks/useTabTitle';
 import { ToastContainer, useToast } from './components/ui/Toast';
 import { projects, personal } from './data/portfolioData';
+import NewProjectPopup from './components/NewProjectPopup';
 
 
 const SECTION_IDS = ['hero', 'about', 'journey', 'projects', 'skills', 'contact'];
@@ -123,6 +124,7 @@ function MatrixEasterEgg({ onClose }) {
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [showEasterEgg, setShowEasterEgg] = useState(false);
+  const [showNewProjectPopup, setShowNewProjectPopup] = useState(false);
   const [activeProjectColor, setActiveProjectColor] = useState('#6C63FF');
   const { activeSection } = useScrollProgress(SECTION_IDS);
   const { toasts, addToast, removeToast } = useToast();
@@ -136,6 +138,7 @@ export default function App() {
 
   const handleLoaderComplete = useCallback(() => {
     setIsLoading(false);
+    setShowNewProjectPopup(true);
   }, []);
 
   // Track active project scroll for dynamic cursor color (Feature 2 & 5 proximity logic)
@@ -177,6 +180,11 @@ export default function App() {
     <>
       {/* Loader Screen */}
       <Loader onComplete={handleLoaderComplete} />
+
+      {/* New Project Welcome Popup */}
+      {showNewProjectPopup && (
+        <NewProjectPopup onClose={() => setShowNewProjectPopup(false)} />
+      )}
 
       {/* Konami Easter Egg */}
       {showEasterEgg && (

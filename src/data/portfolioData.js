@@ -50,6 +50,19 @@ export const experience = [
 
 export const projects = [
   {
+    id: "00",
+    title: "AI Second Brain",
+    category: "Full-Stack AI App · React + Firebase + Groq",
+    description: "A full-stack AI-powered personal knowledge management app. Save text notes, PDFs, and web articles — the AI automatically analyzes, tags, and connects them. Then have a natural conversation with your entire knowledge base to recall, explore, and learn from everything you've saved. Features semantic vector search, a knowledge graph, spaced repetition (SM-2), voice input, PWA support, and public note sharing.",
+    links: [{ label: "Live Demo", url: "https://second-brain-mauve-psi.vercel.app/login" }],
+    tags: ["React 18", "Firebase", "Groq llama-3.3-70b", "Hugging Face Embeddings", "Zustand", "Tailwind CSS", "PWA", "Vercel"],
+    highlight: "Hybrid semantic + keyword search — finds related notes even when exact words don't match",
+    accentColor: "#A78BFA",
+    badge: "🧠 AI-Powered",
+    dark: true,
+    isLatest: true,
+  },
+  {
     id: "01",
     title: "EmployeeHub",
     category: "Enterprise Module · React + .NET Core",
