@@ -8,6 +8,7 @@ import Hero from './components/sections/Hero';
 import About from './components/sections/About';
 import Journey from './components/sections/Journey';
 import Projects from './components/sections/Projects';
+import CaseStudy from './components/sections/CaseStudy';
 import Skills from './components/sections/Skills';
 import Contact from './components/sections/Contact';
 import useScrollProgress from './hooks/useScrollProgress';
@@ -15,12 +16,11 @@ import useKonamiCode from './hooks/useKonamiCode';
 import useTabTitle from './hooks/useTabTitle';
 import { ToastContainer, useToast } from './components/ui/Toast';
 import { projects, personal } from './data/portfolioData';
-import NewProjectPopup from './components/NewProjectPopup';
 
 
-const SECTION_IDS = ['hero', 'about', 'journey', 'projects', 'skills', 'contact'];
-const SECTION_LABELS = ['Home', 'About', 'Journey', 'Projects', 'Skills', 'Contact'];
-const SECTION_COLORS = ['#6C63FF', '#A78BFA', '#45E5C8', '#FFB347', '#45E5C8', '#6C63FF'];
+const SECTION_IDS    = ['hero', 'about', 'journey', 'projects', 'casestudy', 'skills', 'contact'];
+const SECTION_LABELS = ['Home', 'About', 'Journey', 'Projects', 'Case Study', 'Skills', 'Contact'];
+const SECTION_COLORS = ['#6C63FF', '#A78BFA', '#45E5C8', '#FFB347', '#F472B6', '#45E5C8', '#6C63FF'];
 
 // ─── Konami Code Matrix Rain Easter Egg ──────────────────────────────────────
 function MatrixEasterEgg({ onClose }) {
@@ -124,7 +124,6 @@ function MatrixEasterEgg({ onClose }) {
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [showEasterEgg, setShowEasterEgg] = useState(false);
-  const [showNewProjectPopup, setShowNewProjectPopup] = useState(false);
   const [activeProjectColor, setActiveProjectColor] = useState('#6C63FF');
   const { activeSection } = useScrollProgress(SECTION_IDS);
   const { toasts, addToast, removeToast } = useToast();
@@ -138,7 +137,6 @@ export default function App() {
 
   const handleLoaderComplete = useCallback(() => {
     setIsLoading(false);
-    setShowNewProjectPopup(true);
   }, []);
 
   // Track active project scroll for dynamic cursor color (Feature 2 & 5 proximity logic)
@@ -181,11 +179,6 @@ export default function App() {
       {/* Loader Screen */}
       <Loader onComplete={handleLoaderComplete} />
 
-      {/* New Project Welcome Popup */}
-      {showNewProjectPopup && (
-        <NewProjectPopup onClose={() => setShowNewProjectPopup(false)} />
-      )}
-
       {/* Konami Easter Egg */}
       {showEasterEgg && (
         <MatrixEasterEgg onClose={() => setShowEasterEgg(false)} />
@@ -220,6 +213,9 @@ export default function App() {
 
         {/* Projects Showcase */}
         <Projects />
+
+        {/* Case Studies */}
+        <CaseStudy />
 
         <Skills />
         <Contact addToast={addToast} />

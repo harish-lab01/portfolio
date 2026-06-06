@@ -27,7 +27,7 @@ const QUICK_REPLIES = [
   { label: "💼 Available for hire?", value: "Are you currently available for hire?" },
   { label: "🚀 Best project?", value: "What's your best project?" },
   { label: "💻 Tech stack?", value: "What's your tech stack?" },
-  { label: "📄 Grab resume", value: "Can I download your resume?" },
+  { label: "📄 Grab resume", value: "Can I download your resume?", download: true },
   { label: "🏢 Work experience?", value: "Tell me about your work experience" },
   { label: "📬 Contact info?", value: "How can I contact Harish?" },
 ];
@@ -214,7 +214,17 @@ export default function AskHarishWidget() {
               {QUICK_REPLIES.map(qr => (
                 <button
                   key={qr.value}
-                  onClick={() => handleSendMessage(qr.value)}
+                  onClick={() => {
+                    if (qr.download) {
+                      const a = document.createElement('a');
+                      a.href = '/Harish_M_Resume.pdf';
+                      a.download = 'Harish_M_Resume.pdf';
+                      document.body.appendChild(a);
+                      a.click();
+                      document.body.removeChild(a);
+                    }
+                    handleSendMessage(qr.value);
+                  }}
                   disabled={isLoading}
                   className="bg-white/60 hover:bg-primary-glow-from/15 border border-border-glow hover:border-primary-glow-from/30 rounded-full px-3 py-1 font-code text-[9px] text-text-muted hover:text-primary-glow-from transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                 >
